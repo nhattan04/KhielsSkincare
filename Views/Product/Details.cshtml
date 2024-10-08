@@ -1,0 +1,104 @@
+﻿<style>
+    .img {
+        width: 100%;
+        height: auto;
+    }
+
+    .custom-dropdown {
+        background-color: transparent;
+        border: 1px solid #ccc;
+    }
+
+</style>
+
+@model KhielsSkincare.Models.Product
+
+<div class="main__top mb-4">
+    <img src="~/img/bestseller-banner.png" />
+</div>
+<div class="main__content container">
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="text-black">Trang Chủ</a></li>
+            <li class="breadcrumb-item activetext-black" aria-current="page">Sản phẩm bán chạy</li>
+        </ol>
+    </nav>
+    <div class="main__content-tool container d-flex justify-content-between align-items-center p-0">
+        <div class="fw-500" style="font-size: 24px;">Sản Phẩm Bán Chạy</div>
+        <div class="tool-counting d-flex align-items-center">
+            <div class="counting-result pe-3">9 sản phẩm</div>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    BÁN CHẠY
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Xếp hạng</a></li>
+                    <li><a class="dropdown-item" href="#">Giá (Thấp đến Cao)</a></li>
+                    <li><a class="dropdown-item" href="#">Giá (Cao đến Thấp)</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="main__content-list d-flex mt-4 mb-5">
+        <div class="col-3">
+            aaaaas
+        </div>
+        <div class="col-9">
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="card border-0">
+                        <img src="~/images/@Model.ImageUrl" alt="@Model.ProductName" class="card-img-top"  />
+                        <div class="card-body text-center">
+                            <h5 class="card-title font-18">@Model.ProductName</h5>
+                            <p class="card-text fst-italic font-12">@Model.Description</p>
+                        </div>
+                        <div class="form-group d-flex justify-content-center align-items-center">
+                            <label for="dropdownMenu" class="font-12 me-2">Chọn dung tích:</label>
+                            <select class="form-control w-50" id="dropdownMenu">
+                                @foreach (var variant in Model.ProductVariants)
+                                {
+                                    <option value="@variant.Size" data-price="@variant.Price.ToString("C", new System.Globalization.CultureInfo("vi-VN"))">
+                                        @variant.Size
+                                    </option>
+                                }
+                            </select>                           
+                        </div>
+                        <div class="font-18 text-center fw-500 pt-2 pb-2">
+                            <span id="priceDisplay"></span>
+                        </div>
+                        <button type="button" class="btn btn-outline-dark">THÊM VÀO GIỎ HÀNG</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<script>
+    const dropdown = document.getElementById('dropdownMenu');
+    const priceDisplay = document.getElementById('priceDisplay');
+
+    dropdown.addEventListener('change', function () {
+        const selectedOption = dropdown.options[dropdown.selectedIndex];
+        const price = selectedOption.getAttribute('data-price');
+        priceDisplay.innerText = price;
+    });
+</script>*@
+
+<script>
+    // Xử lý sự kiện thay đổi giá dựa trên dung tích được chọn
+    document.getElementById('dropdownMenu').addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        const price = selectedOption.getAttribute('data-price');
+        document.getElementById('priceDisplay').textContent = price;
+    });
+
+    // Hiển thị giá của dung tích đầu tiên khi trang được tải
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const firstOption = dropdownMenu.options[dropdownMenu.selectedIndex];
+        const initialPrice = firstOption.getAttribute('data-price');
+        document.getElementById('priceDisplay').textContent = initialPrice;
+    });
+</script>
