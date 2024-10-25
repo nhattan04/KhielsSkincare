@@ -1,0 +1,238 @@
+﻿@model KhielsSkincare.Models.ViewModels.ProductViewModel
+
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Create Product";
+}
+
+<h2>Create Product</h2>
+
+<form asp-action="Create" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Product.ProductName" class="control-label"></label>
+        <input asp-for="Product.ProductName" class="form-control" />
+        <span asp-validation-for="Product.ProductName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Product.Brand" class="control-label"></label>
+        <input asp-for="Product.Brand" class="form-control" />
+        <span asp-validation-for="Product.Brand" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Product.Description" class="control-label"></label>
+        <textarea asp-for="Product.Description" class="form-control"></textarea>
+        <span asp-validation-for="Product.Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Product.CategoryId" class="control-label"></label>
+        <select asp-for="Product.CategoryId" class="form-control" asp-items="ViewBag.Categories"></select>
+        <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+    </div>
+
+    <!-- Phần thêm các biến thể sản phẩm -->
+    <h4>Product Variants</h4>
+    <div id="product-variants">
+        @for (int i = 0; i < Model.ProductVariants.Count; i++)
+        {
+            <div class="variant-item" data-index="@i">
+                <div class="form-group">
+                    <label>Size</label>
+                    <input type="text" asp-for="ProductVariants[@i].Size" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="number" asp-for="ProductVariants[@i].Price" class="form-control" />
+                </div>
+                <button type="button" class="btn btn-danger" onclick="removeVariant(this)">Remove</button>
+            </div>
+        }
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="addVariant()">Add Variant</button>
+
+    <!-- Phần tải lên hình ảnh -->
+    <div class="form-group mt-4">
+        <label>Upload Images</label>
+        @for (int j = 0; j < 5; j++)
+        {
+            <input type="file" name="ImageUpload" class="form-control" />
+        }
+    </div>
+
+    <button type="submit" class="btn btn-success">Create</button>
+</form>
+
+@section Scripts {
+    <script>
+        function addVariant() {
+            var index = $('#product-variants .variant-item').length;
+            var newVariant = `<div class="variant-item" data-index="${index}">
+                        <div class="form-group">
+                            <label>Size</label>
+                            <input type="text" name="ProductVariants[${index}].Size" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Price</label>
+                            <input type="number" name="ProductVariants[${index}].Price" class="form-control" />
+                        </div>
+                        <button type="button" class="btn btn-danger" onclick="removeVariant(this)">Remove</button>
+                    </div>`;
+            $('#product-variants').append(newVariant);
+        }
+
+        function removeVariant(button) {
+            $(button).closest('.variant-item').remove();
+        }      
+    </script>
+}
+
+
+
+
+
+@*@model KhielsSkincare.Models.Product
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Create Product";
+    
+}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title"> Form products </h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Basic form products</h4>                       
+
+                        <form class="forms-sample" asp-action="Create" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label asp-for="ProductName" class="control-label"></label>
+                                <input asp-for="ProductName" class="form-control" />
+                                <span asp-validation-for="ProductName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Brand" class="control-label"></label>
+                                <input asp-for="Brand" class="form-control" />
+                                <span asp-validation-for="Brand" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <input asp-for="Description" class="form-control" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CategoryId">Category</label>
+                                <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-control"></select>
+                                <span asp-validation-for="CategoryId" class="text-danger"></span>
+                            </div>
+
+                            <div id="variantContainer" class="form-group">
+                                <div class="variant form-group">
+                                    <label>Variant 1</label>
+                                    <input class="text-danger form-control" name="ProductVariants[0].Size" placeholder="Size" />
+                                    <input class="text-danger form-control" name="ProductVariants[0].Price" placeholder="Price" />
+                                </div>
+                            </div>
+
+                            <button class="btn btn-facebook" type="button" onclick="addVariant()">Add Another Variant</button>
+                            
+                            <!-- Upload multiple images -->
+                            <div class="form-group mt-4">
+                                <label>Upload Main Image</label>
+                                <input type="file" id="customFile" asp-for="ImageUpload" class="form-control" onchange="previewImage(event, 'mainImagePreview')" style="display: none;" />
+                                <label class="custom-file-input btn-danger" for="customFile">Choose file</label>
+                                <img id="mainImagePreview" src="~/images/img1.png" alt="Main Image Preview" style="display:block; width: 100px; height: auto;" />
+                            </div>
+                            <div class="form-group mt-4">
+                                <label>Upload Image 1</label>
+                                <input type="file" id="customFile1" asp-for="ImageUpload1" class="form-control" onchange="previewImage(event, 'imagePreview1')" style="display: none;" />
+                                <label class="custom-file-input btn-danger" for="customFile1">Choose file</label>
+                                <img id="imagePreview1" src="~/images/img1.png" alt="Image 1 Preview" style="display:block; width: 100px; height: auto;" />
+                            </div>
+                            <div class="form-group mt-4">
+                                <label>Upload Image 2</label>
+                                <input type="file" id="customFile2" asp-for="ImageUpload2" class="form-control" onchange="previewImage(event, 'imagePreview2')" style="display: none;" />
+                                <label class="custom-file-input btn-gradient-light" for="customFile2">Choose file</label>
+                                <img id="imagePreview2" src="~/images/img1.png" alt="Image 2 Preview" style="display:block; width: 100px; height: auto;" />
+                            </div>
+                            <div class="form-group mt-4">
+                                <label>Upload Image 3</label>
+                                <input type="file" id="customFile3" asp-for="ImageUpload3" class="form-control" onchange="previewImage(event, 'imagePreview3')" style="display: none;" />
+                                <label class="custom-file-input btn-save" for="customFile3">Choose file</label>
+                                <img id="imagePreview3" src="~/images/img1.png" alt="Image 3 Preview" style="display:block; width: 100px; height: auto;" />
+                            </div>
+                            <div class="form-group mt-4">
+                                <label>Upload Image 4</label>
+                                <input type="file" id="customFile4" asp-for="ImageUpload4" class="form-control" onchange="previewImage(event, 'imagePreview4')" style="display: none;" />
+                                <label class="custom-file-input btn-danger" for="customFile4">Choose file</label>
+                                <img id="imagePreview4" src="~/images/img1.png" alt="Image 4 Preview" style="display:block; width: 100px; height: auto;" />
+                            </div>
+                            <div class="form-group mt-4">
+                                <label>Upload Image 5</label>
+                                <input type="file" id="customFile5" asp-for="ImageUpload5" class="form-control" onchange="previewImage(event, 'imagePreview5')" style="display: none;" />
+                                <label class="custom-file-input btn-danger" for="customFile5">Choose file</label>
+                                <img id="imagePreview5" src="~/images/img1.png" alt="Image 5 Preview" style="display:block; width: 100px; height: auto;" />
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <a asp-area="Admin" asp-controller="Product" asp-action="ProductList" class="btn btn-secondary">Cancel</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let variantCount = 1;
+
+    function addVariant() {
+    variantCount++;
+    const variantContainer = document.getElementById('variantContainer');
+    const newVariant = document.createElement('div');
+    newVariant.className = 'variant form-group';
+    newVariant.innerHTML = `
+        <label class="variant-title">Variant ${variantCount}</label> <!-- Tiêu đề với lớp CSS -->
+        <input name="ProductVariants[${variantCount - 1}].Size" class="form-control" placeholder="Size" />
+        <input name="ProductVariants[${variantCount - 1}].Price" class="form-control" placeholder="Price" />
+    `;
+    variantContainer.appendChild(newVariant);        
+}
+
+    function previewImage(event, previewElementId) {
+        const input = event.target;
+        const previewElement = document.getElementById(previewElementId);
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                previewElement.src = e.target.result;
+                previewElement.style.display = 'block'; // Hiển thị hình ảnh
+            };
+
+            reader.readAsDataURL(input.files[0]); // Đọc file dưới dạng URL
+        }
+    }
+    
+</script>
+
+
+<style>
+    .custom-file-input {
+        cursor: pointer;
+    }
+</style>*@

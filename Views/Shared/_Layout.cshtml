@@ -35,7 +35,7 @@
         <div class="header__main container pb-2">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="col-auto">
-                    <a href="@Url.Action("Index", "Home")"><img style="width: 234px;" src="~/img/logo.png" /></a>
+                    <a href="@Url.Action("Index", "Home")"><img style="width: 234px;" src="~/images/logo.png" /></a>
                 </div>
                 <div class="col-auto">
                     <div class="input-field">
@@ -47,16 +47,33 @@
                 </div>
                 <div class="col-auto">
                     <ul class="d-flex align-items-center">
-                        <li class="login-button">
-                            <a href="@Url.Action("Account", "Home")" style="color: white;">
+                        @if(User.Identity?.IsAuthenticated ?? false){
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
                                 <i class="fa-solid fa-user me-1" style="color: #ffffff;"></i>
-                                Đăng nhập
+                                @User.Identity.Name
                             </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="/Account/Profile">Thông tin cá nhân</a></li> <!-- Liên kết đến trang thông tin cá nhân -->
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-action="Logout" asp-controller="Account">Đăng xuất</a></li> <!-- Đăng xuất -->
+                            </ul>        
                         </li>
+                        }
+                        else{
+                            <li class="login-button">
+                                <a asp-controller="Account" asp-action="Login" style="color: white;">
+                                    <i class="fa-solid fa-user me-1" style="color: #ffffff;"></i>
+                                    Đăng nhập
+                                </a>
+                            </li>
+                        }
+                        
+                        
                         <li class="cart-button" style="color: white;">
-                            <a href="#" style="color: white;">
-                                <i class="fa-solid fa-cart-shopping me-1" style="color: #ffffff;"></i>
-                                Giỏ hàng
+                            <a href="@Url.Action("Index", "Cart")" style="color: white;">                               
+                                <i class="fa-solid fa-cart-shopping me-1" style="color: #ffffff;"></i>                               
+                                    @await Component.InvokeAsync("CartSum")                               
                             </a>
                         </li>
                     </ul>
@@ -97,29 +114,29 @@
 
     <footer>
         <div class="footer__top">
-            <img src="~/img/footer_banner.jpg" />
+            <img src="~/images/footer_banner.jpg" />
         </div>
         <div class="footer__middle">
             <div class="container">
                 <ul class="d-flex justify-content-between text-white">
                     <li>
-                        <img src="~/img/footer_28-day.png" />
+                        <img src="~/images/footer_28-day.png" />
                         Cam kết 28 ngày
                     </li>
                     <li>
-                        <img src="~/img/footer_free-delivery.png" />
+                        <img src="~/images/footer_free-delivery.png" />
                         Giao hàng miễn phí
                     </li>
                     <li>
-                        <img src="~/img/footer_exclusive-offers.png" />
+                        <img src="~/images/footer_exclusive-offers.png" />
                         Ưu đãi độc quyền
                     </li>
                     <li>
-                        <img src="~/img/footer_gifting.png" />
+                        <img src="~/images/footer_gifting.png" />
                         Quà tặng
                     </li>
                     <li>
-                        <img src="~/img/footer_sample.png" />
+                        <img src="~/images/footer_sample.png" />
                         Mẫu thử
                     </li>
                 </ul>
@@ -238,7 +255,7 @@
                         </ul>
                     </div>
                     <div>
-                        <img style="width: 370px;" src="~/img/pasted-image-0.png" />
+                        <img style="width: 370px;" src="~/images/pasted-image-0.png" />
                     </div>
                 </div>
             </div>
@@ -247,6 +264,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

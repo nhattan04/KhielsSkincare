@@ -1,3 +1,4 @@
+
 html {
     font-family: sans-serif;
     line-height: 1.15;
@@ -93,6 +94,8 @@ header {
     border-radius: 34px;
     outline: none;
 }
+
+/*Gi? hàng*/
 
 .header__main .cart-button {
     padding: 10px 20px;

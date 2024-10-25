@@ -3,12 +3,14 @@
     public class Order
     {
         public int OrderId { get; set; }
-        public int UserId { get; set; }
-        public DateTime OrderDate { get; set; }
-        public decimal TotalAmount { get; set; }
+        public string OrderCode { get; set; }
+        public string UserName { get; set; }
+        public string Address { get; set; } // Địa chỉ giao hàng
+        public string PhoneNumber { get; set; } // Số điện thoại
 
-        public virtual User User { get; set; }
-        public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public DateTime OrderDate { get; set; }
+        public int Status { get; set; }
+        public decimal TotalAmount { get; set; }      
     }
 
 }

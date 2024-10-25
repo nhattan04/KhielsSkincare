@@ -54,31 +54,19 @@ namespace KhielsSkincare.Controllers
             }
 
             HttpContext.Session.SetJson("Cart", cart);
-            //TempData["success"] = "Add to Cart Success";
-            //return Redirect(Request.Headers["Referer"].ToString());
             return Json(new { success = true });
         }
 
         [HttpPost]
         public async Task<IActionResult> Decrease(int variantId)
         {
-            List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart");
-
-            //if (cart == null)
-            //{
-            //    return Json(new { success = false, message = "Giỏ hàng trống." });
-            //}
+            List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart");         
 
             CartItem cartItem = cart.FirstOrDefault(c => c.ProductVariantId == variantId);
 
-            //if (cartItem == null)
-            //{
-            //    return Json(new { success = false, message = "Sản phẩm không tồn tại trong giỏ hàng." });
-            //}
-
             if (cartItem.Quantity > 1)
             {
-                --cartItem.Quantity;
+                cartItem.Quantity--;
             }
             else
             {
@@ -94,7 +82,7 @@ namespace KhielsSkincare.Controllers
                 HttpContext.Session.SetJson("Cart", cart);
             }
 
-            decimal grandTotal = cart.Sum(x => x.Quantity * x.Price); // Tính tổng lại
+            decimal grandTotal = cart.Sum(x => x.Total); // Tính lại tổng giỏ hàng
 
             return Json(new { success = true, grandTotal });
         }
@@ -112,7 +100,7 @@ namespace KhielsSkincare.Controllers
                 HttpContext.Session.SetJson("Cart", cart);
             }
 
-            decimal grandTotal = cart.Sum(x => x.Quantity * x.Price); // Tính tổng lại
+            decimal grandTotal = cart.Sum(x => x.Total); // Tính lại tổng giỏ hàng
 
             return Json(new { success = true, grandTotal });
         }
@@ -120,24 +108,47 @@ namespace KhielsSkincare.Controllers
         [HttpPost]
         public IActionResult Remove(int variantId)
         {
-            List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart");
-
-            //if (cart == null)
-            //{
-            //    return Json(new { success = false, message = "Giỏ hàng trống." });
-            //}
+            List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart");          
 
             CartItem cartItem = cart.FirstOrDefault(c => c.ProductVariantId == variantId);
 
-            if (cartItem != null)
+            if (cartItem != null) 
             {
                 cart.Remove(cartItem); // Xóa sản phẩm khỏi giỏ hàng
                 HttpContext.Session.SetJson("Cart", cart); // Cập nhật lại giỏ hàng trong session
             }
 
-            decimal grandTotal = cart.Sum(x => x.Quantity * x.Price); // Tính tổng lại
+            decimal grandTotal = cart.Sum(x => x.Total); // Tính lại tổng giỏ hàng
+            if (cart.Count == 0)
+            {
+                return Json(new { success = true, grandTotal, message = "Giỏ hàng của bạn đã trống." });
+            }
+
 
             return Json(new { success = true, grandTotal });
         }
+        [HttpPost]
+        public IActionResult UpdateQuantity(int variantId, int quantity)
+        {
+            var cartItems = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+
+            // Tìm sản phẩm trong giỏ hàng
+            var item = cartItems.FirstOrDefault(i => i.ProductVariantId == variantId);
+            if (item != null)
+            {
+                item.Quantity = quantity; // Cập nhật số lượng
+            }
+            else
+            {
+                // Nếu sản phẩm không tồn tại trong giỏ, bạn có thể thêm vào (tuỳ thuộc vào logic của bạn)
+                cartItems.Add(new CartItem { ProductVariantId = variantId, Quantity = quantity });
+            }
+
+            // Lưu giỏ hàng vào session
+            HttpContext.Session.SetJson("Cart", cartItems);
+
+            return Json(new { success = true, message = "Cập nhật giỏ hàng thành công." });
+        }
+
     }
 }

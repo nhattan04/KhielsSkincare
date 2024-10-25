@@ -15,30 +15,32 @@ namespace KhielsSkincare.Controllers
         {
             _logger = logger;
             _khielsContext = context;
-        }
-        
+        }     
         public IActionResult ProductsSlide()
         {
             return View();
         }
-
         public async Task<IActionResult> Index()
         {
             var products = await _khielsContext.Products.Include(p => p.ProductVariants).ToListAsync();
             return View(products);
-        }
-
-        
-
+        }       
         public IActionResult Privacy()
         {
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(int statuscode)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if(statuscode == 404)
+            {
+                return View("NotFound");
+            }
+            else
+            {
+                return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
     }
 }
