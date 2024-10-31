@@ -9,8 +9,14 @@ namespace KhielsSkincare.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Address",
-                table: "AspNetUsers",
+                name: "OrderCode",
+                table: "Shippings",
+                type: "nvarchar(max)",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "OrderCode",
+                table: "Payments",
                 type: "nvarchar(max)",
                 nullable: true);
         }
@@ -18,9 +24,12 @@ namespace KhielsSkincare.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Address",
-                table: "AspNetUsers");
-        }
+                name: "OrderCode",
+                table: "Shippings");
 
+            migrationBuilder.DropColumn(
+                name: "OrderCode",
+                table: "Payments");
+        }
     }
 }

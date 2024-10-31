@@ -14,7 +14,7 @@
         </div>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <form asp-action="Login" asp-controller="Account">
-            <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]" /> <!-- Thêm dòng này -->
+            <input type="hidden" asp-for="ReturnUrl" />
             <div class="form-wrapper">
                 <input asp-for="UserName" class="form-control" placeholder="User Name" required>
                 <span asp-validation-for="UserName" class="text-danger"></span>

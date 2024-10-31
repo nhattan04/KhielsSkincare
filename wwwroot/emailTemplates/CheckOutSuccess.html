@@ -184,8 +184,6 @@
         }
     </style>
 
-
-
     <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet" type="text/css">
 
 </head>
@@ -215,7 +213,7 @@
                             <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px 100px 0px 90px;font-family:arial,helvetica,sans-serif;" align="left">
 
                                 <h1 class="v-line-height v-font-size" style="margin: 0px; color: #a2092d; line-height: 120%; text-align: center; word-wrap: break-word; font-family: book antiqua,palatino; font-size: 40px; font-weight: 400;">
-                                    <span style="line-height: 36px;">CHÀO MỪNG {{UserName}} ĐẾN VỚI THẾ GIỚI SKINCARE</span>
+                                    <span style="line-height: 36px;">CHÀO {{UserName}}</span>
                                 </h1>
                             </td>
                         </tr>
@@ -230,7 +228,7 @@
                                     <tbody>
                                         <tr>
                                             <td style="padding-right: 0px;padding-left: 0px;" align="center">
-                                                <img align="center" border="0" src="~/images/logo.png" alt="image" title="image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 600px;" width="600">
+                                                <img align="center" border="0" src="../images/Success.jpg" alt="image" title="image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 600px;" width="600">
                                             </td>
                                         </tr>
                                     </tbody>
@@ -246,7 +244,7 @@
                             <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
 
                                 <div class="v-line-height v-font-size" style="font-size: 14px; line-height: 140%; text-align: center; word-wrap: break-word;">
-                                    <p style="line-height: 140%;">ĐÂY LÀ EMAIL XÁC THỰC</p>
+                                    <p style="line-height: 140%;">ĐƠN HÀNG {{OrderCode}} ĐÃ THANH TOÁN THÀNH CÔNG</p>
                                 </div>
 
                             </td>
@@ -258,7 +256,7 @@
                     <tbody>
                         <tr>
                             <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px 10px 5px;font-family:arial,helvetica,sans-serif;" align="left">
-                                <h1 class="v-line-height v-font-size" style="margin: 0px; line-height: 140%; text-align: center; word-wrap: break-word; font-size: 22px; font-weight: 400;"><span>VUI LÒNG BẤM VÀO ĐÂY ĐỂ XÁC NHẬN</span></h1>
+                                <h1 class="v-line-height v-font-size" style="margin: 0px; line-height: 140%; text-align: center; word-wrap: break-word; font-size: 22px; font-weight: 400;"><span>TỔNG: {{TotalAmount}}</span></h1>
 
                             </td>
                         </tr>
@@ -290,19 +288,16 @@
                         <tr>
                             <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
 
-                                <!--[if mso]><style>.v-button {background: transparent !important;}</style><![endif]-->
                                 <div align="center">
-                                    <!--[if mso]><table border="0" cellspacing="0" cellpadding="0"><tr><td align="center" bgcolor="#a2092d" style="padding:10px 20px;" valign="top"><![endif]-->
                                     <a href="https://unlayer.com" target="_blank" class="v-button v-size-width v-font-size" style="box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #a2092d; border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px; width:28%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 14px;">
                                         <span class="v-line-height" style="display:block;padding:10px 20px;line-height:120%;">
                                             <span style="line-height: 16.8px;">
                                                 <a href="{{ConfirmationLink}}" class="button">
-                                                    XÁC NHẬN
+                                                    HỖ TRỢ
                                                 </a>
                                             </span>
                                         </span>
                                     </a>
-                                    <!--[if mso]></td></tr></table><![endif]-->
                                 </div>
 
                             </td>

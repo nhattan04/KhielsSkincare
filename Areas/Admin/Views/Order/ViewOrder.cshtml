@@ -16,7 +16,6 @@
                         <th>User Name</th>
                         <th>Size</th>
                         <th>Price</th>
-                        <th>Order Date</th>
                         <th>Status</th>
                         <th>Chỉnh sửa</th>
                         <th>Xóa</th>
@@ -25,9 +24,10 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
+                        @*subtotal = item.Quantity + item.Price;
+                        toatal += subtotal;*@
                         <tr>
                             <td>@item.OrderCode</td>
-                            <td>@item.UserName</td>
                             <td>@item.Size</td>
                             <td>@item.Price</td>
                                                        
@@ -38,39 +38,3 @@
         </div>
     </div>
 </div>
-
-<!-- Modal for delete confirmation -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Bạn có chắc chắn muốn xóa sản phẩm <strong id="productName"></strong> không?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <form id="deleteForm" method="post" asp-action="DeleteConfirmed">
-                    <input type="hidden" name="id" id="deleteProductId" />
-                    <button type="submit" class="btn btn-danger">Xóa</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    <script>
-        function confirmDelete(productId, productName) {
-            // Gán giá trị vào modal
-            document.getElementById('deleteProductId').value = productId;
-            document.getElementById('productName').textContent = productName;
-
-            // Hiển thị modal
-            var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-            deleteModal.show();
-        }
-    </script>
-}

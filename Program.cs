@@ -26,7 +26,7 @@ builder.Services.AddSession(option =>
 
 builder.Services.AddRazorPages();
 
-builder.Services.AddIdentity<AppUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddIdentity<AppUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<KhielsContext>()
     .AddDefaultTokenProviders();
 

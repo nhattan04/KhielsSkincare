@@ -87,12 +87,28 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/PROJECT/DoAnPhanMem/KhielsVN/KhielsSkincare/KhielsSkincare/Views/Cart/EmptyCart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxFbXB0eUNhcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/PROJECT/DoAnPhanMem/KhielsVN/KhielsSkincare/KhielsSkincare/Views/Cart/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PROJECT/DoAnPhanMem/KhielsVN/KhielsSkincare/KhielsSkincare/Views/Category/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PROJECT/DoAnPhanMem/KhielsVN/KhielsSkincare/KhielsSkincare/Views/CheckOut/PaymentMethod.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hlY2tPdXRcUGF5bWVudE1ldGhvZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PROJECT/DoAnPhanMem/KhielsVN/KhielsSkincare/KhielsSkincare/Views/CheckOut/ShippingInfo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hlY2tPdXRcU2hpcHBpbmdJbmZvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PROJECT/DoAnPhanMem/KhielsVN/KhielsSkincare/KhielsSkincare/Views/CheckOut/ThankYou.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hlY2tPdXRcVGhhbmtZb3UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PROJECT/DoAnPhanMem/KhielsVN/KhielsSkincare/KhielsSkincare/Views/Home/Index.cshtml]
@@ -115,6 +131,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/PROJECT/DoAnPhanMem/KhielsVN/KhielsSkincare/KhielsSkincare/Views/Product/ForMen.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxGb3JNZW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/PROJECT/DoAnPhanMem/KhielsVN/KhielsSkincare/KhielsSkincare/Views/Product/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -127,8 +147,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/PROJECT/DoAnPhanMem/KhielsVN/KhielsSkincare/KhielsSkincare/Views/Shared/_FilterPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9GaWx0ZXJQYXJ0aWFsLmNzaHRtbA==
+[D:/PROJECT/DoAnPhanMem/KhielsVN/KhielsSkincare/KhielsSkincare/Views/Shared/_FilterPricePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9GaWx0ZXJQcmljZVBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PROJECT/DoAnPhanMem/KhielsVN/KhielsSkincare/KhielsSkincare/Views/Shared/_FilterSkinPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9GaWx0ZXJTa2luUGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PROJECT/DoAnPhanMem/KhielsVN/KhielsSkincare/KhielsSkincare/Views/Shared/_NotificationCartPartial.cshtml]

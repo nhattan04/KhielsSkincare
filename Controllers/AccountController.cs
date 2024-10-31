@@ -42,6 +42,12 @@ namespace KhielsSkincare.Controllers
             }
             return View(loginViewModel);
         }
+        [HttpGet]
+        public IActionResult IsLoggedIn()
+        {
+            bool isLoggedIn = User.Identity.IsAuthenticated;
+            return Json(new { isLoggedIn });
+        }
         public IActionResult Register()
         {
             return View();
@@ -50,85 +56,74 @@ namespace KhielsSkincare.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(User user)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    AppUser newUser = new AppUser { UserName = user.UserName, Email = user.Email };
-            //    IdentityResult result = await _userManager.CreateAsync(newUser, user.Password);
-
-            //    if (result.Succeeded)
-            //    {
-            //        // Tạo mã xác nhận
-            //        var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
-            //        var userId = await _userManager.GetUserIdAsync(newUser);
-
-            //        // Tạo ConfirmationLink
-            //        var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = userId, code = code }, Request.Scheme);
-
-            //        // Đọc nội dung file HTML
-            //        var emailTemplatePath = Path.Combine(_webHostEnvironment.WebRootPath, "emailTemplates", "EmailTemplate.html");
-            //        var emailTemplate = await System.IO.File.ReadAllTextAsync(emailTemplatePath);
-
-            //        // Thay thế các biến trong template
-            //        emailTemplate = emailTemplate.Replace("{{UserName}}", user.UserName);
-            //        emailTemplate = emailTemplate.Replace("{{ConfirmationLink}}", confirmationLink); // Thay thế link xác nhận
-
-            //        // Gửi email xác thực
-            //        await _emailSender.SendEmailAsync(newUser.Email, "Xác thực tài khoản", emailTemplate);
-
-            //        TempData["success"] = "Tạo tài khoản thành công. Hãy kiểm tra email để xác nhận.";
-            //        return Redirect("/home/index");
-            //    }
-
-            //    foreach (IdentityError error in result.Errors)
-            //    {
-            //        ModelState.AddModelError("", error.Description);
-            //    }
-            //}
-            //return View();
-
             if (ModelState.IsValid)
             {
                 AppUser newUser = new AppUser { UserName = user.UserName, Email = user.Email };
                 IdentityResult result = await _userManager.CreateAsync(newUser, user.Password);
+
                 if (result.Succeeded)
                 {
+                    // Tạo mã xác nhận
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                    var userId = await _userManager.GetUserIdAsync(newUser);
+
+                    // Tạo ConfirmationLink
+                    var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = userId, code = code }, Request.Scheme);
+
+                    // Đọc nội dung file HTML
+                    var emailTemplatePath = Path.Combine(_webHostEnvironment.WebRootPath, "emailTemplates", "EmailTemplate.html");
+                    var emailTemplate = await System.IO.File.ReadAllTextAsync(emailTemplatePath);
+
+                    // Thay thế các biến trong template
+                    emailTemplate = emailTemplate.Replace("{{UserName}}", user.UserName);
+                    emailTemplate = emailTemplate.Replace("{{ConfirmationLink}}", confirmationLink); // Thay thế link xác nhận
+
+                    // Gửi email xác thực
+                    await _emailSender.SendEmailAsync(newUser.Email, "Xác thực tài khoản", emailTemplate);
 
                     TempData["success"] = "Tạo tài khoản thành công. Hãy kiểm tra email để xác nhận.";
                     return Redirect("/home/index");
                 }
+
                 foreach (IdentityError error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
             }
             return View();
+
+            
         }
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
-            if (userId == null || token == null)
+            if (userId == null || code == null)
             {
-                return RedirectToAction("Login");
+                return RedirectToAction("Error", "Home"); // Trang lỗi nếu thiếu tham số
             }
 
+            // Tìm người dùng theo userId
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return RedirectToAction("Login");
+                return RedirectToAction("Error", "Home"); // Trang lỗi nếu không tìm thấy user
             }
 
-            var result = await _userManager.ConfirmEmailAsync(user, token);
+            // Xác thực tài khoản
+            var result = await _userManager.ConfirmEmailAsync(user, code);
             if (result.Succeeded)
             {
-                return View("ConfirmEmail"); // Tạo view để thông báo xác thực thành công
+                TempData["success"] = "Xác thực tài khoản thành công. Bây giờ bạn có thể đăng nhập.";
+                return RedirectToAction("Index", "Home");
             }
-            return View("Error"); // Tạo view để thông báo lỗi
+
+            TempData["error"] = "Xác thực tài khoản thất bại. Vui lòng thử lại.";
+            return RedirectToAction("Error", "Home");
         }
+
         public async Task<IActionResult> Logout(string returnUrl = "/")
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction(returnUrl);
+            return RedirectToAction("Login","Account");
         }
     }
 }

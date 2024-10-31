@@ -1,11 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KhielsSkincare.Models
 {
     public class OrderDetail
     {
         public int OrderDetailId { get; set; }
-        public string UserName { get; set; }
         public string OrderCode { get; set; }
         public int ProductId { get; set; }
         public string ProductName { get; set; }

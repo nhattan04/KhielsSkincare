@@ -31,6 +31,8 @@ namespace KhielsSkincare.Models
         public virtual ICollection<ProductVariant> ProductVariants { get; set; }
         public virtual ProductDetail ProductDetail { get; set; }
         public virtual ICollection<Discount> Discounts { get; set; }
+        public ICollection<Review> Reviews { get; set; } 
+
         [NotMapped]
         [FileExtension]
         public IFormFile ImageUpload { get; set; } // Hình ảnh chính

@@ -1,4 +1,5 @@
-﻿using KhielsSkincare.Models;
+﻿using KhielsSkincare.Extensions;
+using KhielsSkincare.Models;
 using KhielsSkincare.Models.ViewModels;
 using KhielsSkincare.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +58,7 @@ namespace KhielsSkincare.Controllers
             return Json(new { success = true });
         }
 
+
         [HttpPost]
         public async Task<IActionResult> Decrease(int variantId)
         {
@@ -83,8 +85,9 @@ namespace KhielsSkincare.Controllers
             }
 
             decimal grandTotal = cart.Sum(x => x.Total); // Tính lại tổng giỏ hàng
+            string formattedTotal = grandTotal.ToVnd(); // Định dạng sang VND
 
-            return Json(new { success = true, grandTotal });
+            return Json(new { success = true, grandTotal = formattedTotal });
         }
 
         [HttpPost]
@@ -102,7 +105,9 @@ namespace KhielsSkincare.Controllers
 
             decimal grandTotal = cart.Sum(x => x.Total); // Tính lại tổng giỏ hàng
 
-            return Json(new { success = true, grandTotal });
+            string formattedTotal = grandTotal.ToVnd(); // Định dạng sang VND
+
+            return Json(new { success = true, grandTotal = formattedTotal });
         }
 
         [HttpPost]
@@ -125,7 +130,8 @@ namespace KhielsSkincare.Controllers
             }
 
 
-            return Json(new { success = true, grandTotal });
+            string formattedTotal = grandTotal.ToVnd(); // Định dạng sang VND
+            return Json(new { success = true, grandTotal = formattedTotal });
         }
         [HttpPost]
         public IActionResult UpdateQuantity(int variantId, int quantity)
