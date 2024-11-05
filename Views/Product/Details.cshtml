@@ -40,8 +40,8 @@
         border: 1px solid #000000 !important;
     }
 
-/*    //star
-*/    .c-rating-input__field {
+    /*    //star
+    */ .c-rating-input__field {
         display: flex;
         gap: 5px;
     }
@@ -97,23 +97,24 @@
             <div class="product-details">
                 <h3 class="product-title font-serif fw-bold">@Model.ProductDetail.ProductName</h3>
                 <span id="main-product-price" class="font-18 fw-500">@Model.ProductDetail.ProductVariants.First().Price.ToVnd()</span>
-                <div class="c-product-main__rating h-text-justify-content-center h-text-justify-content-start-for-large">  
-                    <a class="c-rating" href="#ratings" aria-label="Serum Sáng Da Mờ Thâm Vitamin C Kiehl's Clearly Corrective Dark Spot Solution rating is 4 out of 5 stars rated by 4 users." title="4 out of 5" data-component="global/EventTrigger" data-analytics="{&quot;category&quot;:&quot;product detail page&quot;,&quot;action&quot;:&quot;write review&quot;,&quot;label&quot;:&quot;serum sáng da mờ thâm vitamin c kiehl's clearly corrective dark spot solution::3605972549082&quot;,&quot;extraData&quot;:{&quot;event_name&quot;:&quot;write_review&quot;,&quot;product_info&quot;:&quot;serum sáng da mờ thâm vitamin c kiehl's clearly corrective dark spot solution::3605972549082&quot;}}" data-component-options="{&quot;event&quot;:&quot;click&quot;,&quot;skipPreventDefault&quot;:true}" data-component-id="l_10761rgr4w2">  
-                        <span class="c-rating__star m-active"></span>  <span class="c-rating__star m-active"></span>  
-                        <span class="c-rating__star m-active"></span>  <span class="c-rating__star m-active"></span>  
-                        <span class="c-rating__star"><span class="c-rating__star m-active" style="width:75%"></span></span>  
-                    </a>  
-                    <div class="c-product-main__review" data-component="global/EventTrigger" data-analytics="{&quot;category&quot;:&quot;product detail page&quot;,&quot;action&quot;:&quot;write review&quot;,&quot;label&quot;:&quot;serum sáng da mờ thâm vitamin c kiehl's clearly corrective dark spot solution::3605972549082&quot;,&quot;extraData&quot;:{&quot;event_name&quot;:&quot;write_review&quot;,&quot;product_info&quot;:&quot;serum sáng da mờ thâm vitamin c kiehl's clearly corrective dark spot solution::3605972549082&quot;}}" data-component-options="{&quot;event&quot;:&quot;click&quot;,&quot;skipPreventDefault&quot;:true}" data-component-id="l_tkvg0y16mzc">  
+                <div class="c-product-main__rating h-text-justify-content-center h-text-justify-content-start-for-large">
+                    <a class="c-rating" href="#ratings" aria-label="Serum Sáng Da Mờ Thâm Vitamin C Kiehl's Clearly Corrective Dark Spot Solution rating is 4 out of 5 stars rated by 4 users." title="4 out of 5" data-component="global/EventTrigger" data-analytics="{&quot;category&quot;:&quot;product detail page&quot;,&quot;action&quot;:&quot;write review&quot;,&quot;label&quot;:&quot;serum sáng da mờ thâm vitamin c kiehl's clearly corrective dark spot solution::3605972549082&quot;,&quot;extraData&quot;:{&quot;event_name&quot;:&quot;write_review&quot;,&quot;product_info&quot;:&quot;serum sáng da mờ thâm vitamin c kiehl's clearly corrective dark spot solution::3605972549082&quot;}}" data-component-options="{&quot;event&quot;:&quot;click&quot;,&quot;skipPreventDefault&quot;:true}" data-component-id="l_10761rgr4w2">
+                        <span class="c-rating__star m-active"></span>  <span class="c-rating__star m-active"></span>
+                        <span class="c-rating__star m-active"></span>  <span class="c-rating__star m-active"></span>
+                        <span class="c-rating__star"><span class="c-rating__star m-active" style="width:75%"></span></span>
+                    </a>
+                    <div class="c-product-main__review" data-component="global/EventTrigger" data-analytics="{&quot;category&quot;:&quot;product detail page&quot;,&quot;action&quot;:&quot;write review&quot;,&quot;label&quot;:&quot;serum sáng da mờ thâm vitamin c kiehl's clearly corrective dark spot solution::3605972549082&quot;,&quot;extraData&quot;:{&quot;event_name&quot;:&quot;write_review&quot;,&quot;product_info&quot;:&quot;serum sáng da mờ thâm vitamin c kiehl's clearly corrective dark spot solution::3605972549082&quot;}}" data-component-options="{&quot;event&quot;:&quot;click&quot;,&quot;skipPreventDefault&quot;:true}" data-component-id="l_tkvg0y16mzc">
                         <a class="c-product-main__review-count" href="#ratings" aria-label="Serum Sáng Da Mờ Thâm Vitamin C Kiehl's Clearly Corrective Dark Spot Solution rating is 4 out of 5 stars rated by 4 users.">
 
-                        </a>   
-                            <span class="c-product-main__review-highlight-icon">  
+                        </a>
+                        <span class="c-product-main__review-highlight-icon">
 
-                            </span> 
-                            <a class="c-product-main__review-highlight-total" href="#ratings">(4 reviews)
+                        </span>
+                        <a class="c-product-main__review-highlight-total" href="#ratings">
+                            (4 reviews)
 
-                        </a>    
-                    </div>  
+                        </a>
+                    </div>
                 </div>
                 <h6 class="product-description pt-3 pb-3 fw-normal">@Model.ProductDetail.Description</h6>
             </div>
@@ -123,7 +124,7 @@
                     {
                         <div class="col-auto col-lg-4 mb-4 text-center font-12">
                             <a class="variation-item @(Model.ProductDetail.ProductVariants.First() == variant ? "selected-variation" : "") d-block border text-decoration-none"
-                                href="#" data-price="@variant.Price.ToVnd()">
+                               href="#" data-price="@variant.Price.ToVnd()">
                                 <span class="variation-size text-black fw-500">@variant.Size</span>
                                 <div class="variation-price text-center">
                                     <span class="d-block text-dark opacity-75">@variant.Price.ToVnd()</span>
@@ -132,8 +133,9 @@
                         </div>
                     }
                 </div>
-                <div class="d-flex justify-content-evenly">
-                    <div class="input-group pb-3" style="width: 120px;">
+                @Html.AntiForgeryToken()
+                <div class="d-flex">
+                    <div class="input-group" style="width: 120px;">
                         <!-- Nút giảm số lượng -->
                         <button class="btn btn-outline-secondary rounded-0 border-dark border border-end-0 decrease-quantity"
                                 type="button" aria-label="Giảm số lượng"
@@ -154,14 +156,23 @@
                         </button>
                     </div>
 
-                    <div class="ms-3" style="width: 375px;">
-                        <button type="button" class="rounded-0 btn btn-outline-dark add-to-cart w-100"
+                    <div class="ms-3 me-5">
+                        <button type="button" class="rounded-0 btn btn-outline-dark add-to-cart"
                                 data-product-id="@Model.ProductDetail.ProductId"
                                 data-variant-id="@Model.ProductDetail.ProductVariants.FirstOrDefault()?.ProductVariantId"
                                 onclick="addToCart(this)">
                             THÊM VÀO GIỎ HÀNG
                         </button>
                     </div>
+
+                    <!-- Nút thêm vào yêu thích -->
+                    <button type="button" class="btn btn-outline-danger"
+                            data-product-id="@Model.ProductDetail.ProductId"
+                            data-variant-id="@Model.ProductDetail.ProductVariants.FirstOrDefault()?.ProductVariantId"
+                            style="width: fit-content;"
+                            onclick="addToFavorite(this)">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
                 </div>
 
             </div>
@@ -185,7 +196,7 @@
                     </a>
                     <div class="form-group d-flex justify-content-center align-items-center">
                         <label for="dropdownMenu-@product.ProductId" class="font-12 me-2">Chọn dung tích:</label>
-                        <select class="form-control w-50 dropdownMenu" id="dropdownMenu-@product.ProductId" data-product-id="@product.ProductId">                            
+                        <select class="form-control w-50 dropdownMenu" id="dropdownMenu-@product.ProductId" data-product-id="@product.ProductId">
                             @foreach (var variant in product.ProductVariants)
                             {
                                 <option value="@variant.ProductVariantId" data-price="@variant.Price.ToVnd())">
@@ -202,10 +213,10 @@
                         </span>
                     </div>
                     <button class="btn btn-outline-dark add-to-cart"
-                        type="button"
-                        data-product-id="@product.ProductId"
-                        data-variant-id="@product.ProductVariants.FirstOrDefault()?.ProductVariantId"
-                        onclick="addToCart(this)">
+                            type="button"
+                            data-product-id="@product.ProductId"
+                            data-variant-id="@product.ProductVariants.FirstOrDefault()?.ProductVariantId"
+                            onclick="addToCart(this)">
                         THÊM VÀO GIỎ HÀNG
                     </button>
                 </div>
@@ -213,7 +224,7 @@
         }
     </div>
     <div class="accordion" id="accordionPanelsStayOpenExample">
-        
+
 
         <div class="accordion-item border-bottom border-top border-0">
             <h2 class="accordion-header">
@@ -252,7 +263,7 @@
                     <span><strong>Danh sách các thành phần chính của sản phẩm sẽ được hiển thị tại đây.</strong></span>
                 </div>
             </div>
-        </div>       
+        </div>
 
         <div class="accordion-item border-bottom border-top border-0">
             <h2 class="accordion-header">
@@ -261,7 +272,7 @@
                 </button>
             </h2>
             <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse">
-                <div class="accordion-body" id="reviewList" >
+                <div class="accordion-body" id="reviewList">
                     @foreach (var review in Model.Reviews)
                     {
                         <div class="review-item">
@@ -278,7 +289,7 @@
                 </button>
             </div>
         </div>
-                   
+
     </div>
 </div>
 
@@ -296,7 +307,7 @@
                 <div class="container-fluid">
                     <div class="row justify-content-center mt-0">
                         <div class="col-12 text-center p-0 mt-3 mb-2">
-                            <form id="msform">                              
+                            <form id="msform">
                                 <!-- fieldsets -->
                                 <fieldset>
                                     <div class="form-card">
@@ -314,8 +325,8 @@
                                             <input type="hidden" name="rating" id="rating" value="0">
                                         </div>
 
-                                        <textarea class="c-review-form__textarea" name="comment" 
-                                        required placeholder="Hãy viết nhận xét của bạn tại đây..."></textarea>
+                                        <textarea class="c-review-form__textarea" name="comment"
+                                                  required placeholder="Hãy viết nhận xét của bạn tại đây..."></textarea>
 
                                         <input type="radio" name="nametype" value="fullname" id="nametype_fullname" required>
                                         <label for="nametype_fullname">Dùng tên/họ của tôi</label>
@@ -326,7 +337,7 @@
                                         <div class="c-field c-text-field nickname-input" id="nicknameField" style="display: none;">
                                             <input type="text" name="nickname" placeholder="Nickname">
                                         </div>
-                                       
+
                                     </div>
                                     <button type="submit" id="submitReviewBtn" class="next action-button">Đăng Đánh Giá</button>
                                 </fieldset>
@@ -358,7 +369,7 @@
 </div>
 
 
-@section Scripts{
+@section Scripts {
     <script>
 
         function checkLoginAndOpenModal() {
@@ -381,7 +392,7 @@
 
         $(document).ready(function () {
 
-            
+
 
             // Hiển thị trường nickname nếu người dùng chọn "Dùng biệt danh của tôi"
             $('input[name="nametype"]').change(function () {
@@ -405,7 +416,7 @@
                         $(this).removeClass('selected');
                     }
                 });
-            });          
+            });
 
             // Gửi form đánh giá bằng AJAX
             $('#msform').on('submit', function (e) {
@@ -441,12 +452,12 @@
 
                             // Cập nhật danh sách đánh giá
                             $('#reviews').append(`
-                            <div class="review-item">
-                                <p><strong>${displayName}</strong> - ${formData.rating} sao</p>
-                                <p>${formData.comment}</p>
-                                <p><em>${new Date().toLocaleDateString()}</em></p>
-                            </div>
-                        `);
+                                    <div class="review-item">
+                                        <p><strong>${displayName}</strong> - ${formData.rating} sao</p>
+                                        <p>${formData.comment}</p>
+                                        <p><em>${new Date().toLocaleDateString()}</em></p>
+                                    </div>
+                                `);
                             alert('Thành công');
                             $('#progressbar li#confirm').addClass('active'); // Hiển thị bước hoàn tất
                             window.location.href = '/Product/Details';
@@ -493,7 +504,7 @@
         //    });
         //});
 
-        
+
 
         //document.querySelectorAll('.star').forEach(star => {
         //    star.addEventListener('click', function () {
@@ -505,7 +516,7 @@
         //        });
         //    });
         //});
-               
+
 
         $(document).ready(function () {
             // Xử lý nút tăng số lượng
@@ -604,5 +615,40 @@
                 }
             });
         }
+
+        // Thêm sản phẩm yêu thích
+        function addToFavorite(button) {
+            const productId = button.getAttribute('data-product-id');
+            const variantId = button.getAttribute('data-variant-id');
+
+            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+            const token = tokenElement ? tokenElement.value : '';
+
+            const data = {
+                ProductId: productId,
+                ProductVariantId: variantId
+            };
+
+            fetch('/Favorite/AddToFavorite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': token
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert("Đã thêm vào danh sách yêu thích");
+                        button.classList.add("added"); // Thay đổi kiểu dáng nút nếu cần
+                    } else {
+                        alert("Có lỗi xảy ra khi thêm vào danh sách yêu thích: " + result.message);
+                    }
+                })
+                .catch(error => console.error("Yêu cầu thêm vào danh sách yêu thích không thành công:", error));
+        }
+
+
     </script>
 }

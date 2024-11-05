@@ -45,7 +45,7 @@
     {
         <p class="text-white">User information is not available.</p>
     }
-    <div class="d-flex align-items-start mt-5">
+    <div class="d-flex align-items-start mt-5 mb-5">
         <div class="nav flex-column me-3 bg-white" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="width: 289px; border-radius: 12px;">
             <a class="nav-link custom-nav-link d-flex align-items-center @(currentPage == "ProfileDetail" ? "active" : "")" href="/Profile/ProfileDetail" role="tab" aria-selected="true" style="height: 58px;">
                 <span class="me-2"><i class="fa-regular fa-id-card"></i></span>
@@ -59,16 +59,16 @@
                 <span><i class="fa-solid fa-angle-right"></i></span>
             </a>
 
-            <a class="nav-link custom-nav-link d-flex align-items-center" href="/messages" role="tab" aria-selected="false" style="height: 58px;">
-                <span class="me-2">
-                    <i class="fa-regular fa-comments"></i>
-                </span>
-                <p class="m-0 flex-grow-1">
-                    Lịch sử đánh giá
-                </p>
-                <span>
-                    <i class="fa-solid fa-angle-right"></i>
-                </span>
+            <a class="nav-link custom-nav-link d-flex align-items-center @(currentPage == "AddToFavorite" ? "active" : "")" href="/Favorite/Index" role="tab" aria-selected="false" style="height: 58px;">
+                <span class="me-2"><i class="fa-solid fa-bookmark"></i></span>
+                <p class="m-0 flex-grow-1">Sản phẩm yêu thích</p>
+                <span><i class="fa-solid fa-angle-right"></i></span>
+            </a>
+
+            <a class="nav-link custom-nav-link d-flex align-items-center @(currentPage == "AddToFavorite" ? "active" : "")" href="/Favorite/Index" role="tab" aria-selected="false" style="height: 58px;">
+                <span class="me-2"><i class="fa-solid fa-bookmark"></i></span>
+                <p class="m-0 flex-grow-1">Lịch sử đánh giá</p>
+                <span><i class="fa-solid fa-angle-right"></i></span>
             </a>
         </div>
     </div>

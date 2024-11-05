@@ -1,25 +1,32 @@
 ﻿using KhielsSkincare.Models;
+using KhielsSkincare.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using KhielsSkincare.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KhielsSkincare.Controllers
 {
     public class ProfileController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly KhielsContext _context;
+        private readonly ILogger<HomeController> _logger;
 
-        public ProfileController(UserManager<AppUser> userManager)
+        public ProfileController(ILogger<HomeController> logger, KhielsContext context, UserManager<AppUser> userManager)
         {
+            _logger = logger;
+            _context = context;
             _userManager = userManager;
         }
 
         public async Task<IActionResult> ProfileDetail()
         {
             ViewData["CurrentPage"] = "ProfileDetail";
-            // Lấy thông tin người dùng hiện tại
             var user = await _userManager.GetUserAsync(User);
 
-            // Truyền thông tin người dùng qua View
             return View(user);
         }
 
@@ -76,19 +83,17 @@ namespace KhielsSkincare.Controllers
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-                return View("ProfileDetail", user); 
+                return View("ProfileDetail", user);
             }
 
-            return RedirectToAction("ProfileDetail"); // Redirect về trang chi tiết
+            return RedirectToAction("ProfileDetail");
         }
 
         public async Task<IActionResult> Orders()
         {
             ViewData["CurrentPage"] = "Orders";
-            // Lấy thông tin người dùng hiện tại
             var user = await _userManager.GetUserAsync(User);
 
-            // Truyền thông tin người dùng qua View
             return View(user);
         }
     }

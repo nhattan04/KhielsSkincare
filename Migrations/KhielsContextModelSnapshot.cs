@@ -142,6 +142,34 @@ namespace KhielsSkincare.Migrations
                     b.ToTable("Discount");
                 });
 
+            modelBuilder.Entity("KhielsSkincare.Models.FavoriteProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductVariantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductVariantId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FavoriteProducts");
+                });
+
             modelBuilder.Entity("KhielsSkincare.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
@@ -570,6 +598,32 @@ namespace KhielsSkincare.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("KhielsSkincare.Models.FavoriteProduct", b =>
+                {
+                    b.HasOne("KhielsSkincare.Models.Product", "Product")
+                        .WithMany("FavoriteProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("KhielsSkincare.Models.ProductVariant", "ProductVariant")
+                        .WithMany()
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("KhielsSkincare.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductVariant");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("KhielsSkincare.Models.OrderDetail", b =>
                 {
                     b.HasOne("KhielsSkincare.Models.Product", "Product")
@@ -690,6 +744,8 @@ namespace KhielsSkincare.Migrations
             modelBuilder.Entity("KhielsSkincare.Models.Product", b =>
                 {
                     b.Navigation("Discounts");
+
+                    b.Navigation("FavoriteProducts");
 
                     b.Navigation("ProductDetail");
 
