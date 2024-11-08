@@ -28,6 +28,7 @@ namespace KhielsSkincare.Models
         public string SkinCondition { get; set; } 
 
         public virtual Category Categories { get; set; }
+        public virtual ICollection<FavoriteProduct> FavoriteProducts { get; set; }
         public virtual ICollection<ProductVariant> ProductVariants { get; set; }
         public virtual ProductDetail ProductDetail { get; set; }
         public virtual ICollection<Discount> Discounts { get; set; }

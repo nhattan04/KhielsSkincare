@@ -61,92 +61,144 @@
 
     <div class="main__product container pt-5 pb-5">
         <h2 class="text-uppercase fw-500 text-center font-serif pt-5 p-4">Top sản phẩm bán chạy</h2>
+        @Html.AntiForgeryToken()
         <div class="product-slide row row-cols-1 row-cols-md-2 row-cols-lg-4">
             @foreach (var product in Model)
             {
-                <div class="product col mb-4">
-                    <div class="card border-0">
-                        <a asp-action="Details" asp-controller="Product" asp-route-Id="@product.ProductId">
-                            <img src="~/images/product/@product.ImageUrl" alt="@product.ProductName" class="card-img-top" />
-                            <div class="card-body text-center">
-                                <h5 class="card-title fw-bold font-serif">@product.ProductName</h5>
-                                <p class="card-text fst-italic font-14 font-serif">@product.Description</p>
-                            </div>
-                        </a>
-                        <div class="form-group d-flex justify-content-center align-items-center">
-                            <label for="dropdownMenu-@product.ProductId" class="font-12 me-2">Chọn dung tích:</label>
-                            <select class="form-control w-50 dropdownMenu" id="dropdownMenu-@product.ProductId" data-product-id="@product.ProductId">
+                    <div class="product col mb-4">
+                        <div class="card border-0">
+                            <a asp-action="Details" asp-controller="Product" asp-route-Id="@product.ProductId">
+                                <img src="~/images/product/@product.ImageUrl" alt="@product.ProductName" class="card-img-top" />
+                                <div class="card-body text-center">
+                                    <h5 class="card-title fw-bold font-serif">@product.ProductName</h5>
+                                    <p class="card-text fst-italic font-14 font-serif">@product.Description</p>
+                                </div>
+                            </a>
+                            <div class="form-group d-flex justify-content-center align-items-center">
+                                <label for="dropdownMenu-@product.ProductId" class="font-12 me-2">Chọn dung tích:</label>
+                                <select class="form-control w-50 dropdownMenu" id="dropdownMenu-@product.ProductId" data-product-id="@product.ProductId">
                                 @foreach (var variant in product.ProductVariants)
                                 {
-                                    <option value="@variant.ProductVariantId" data-price="@variant.Price.ToString("C", new System.Globalization.CultureInfo("vi-VN"))">
+                                            <option value="@variant.ProductVariantId" data-price="@variant.Price.ToString("C", new System.Globalization.CultureInfo("vi-VN"))">
                                         @variant.Size
-                                    </option>
+                                            </option>
                                 }
-                            </select>
-                        </div>
+                                </select>
+                            </div>
 
-                        <!-- Hiển thị giá theo dung tích được chọn -->
-                        <div class="font-18 text-center fw-500 pt-2 pb-2">
-                            <span class="priceDisplay" id="priceDisplay-@product.ProductId">
+                            <!-- Hiển thị giá theo dung tích được chọn -->
+                            <div class="font-18 text-center fw-500 pt-2 pb-2">
+                                <span class="priceDisplay" id="priceDisplay-@product.ProductId">
                                 @product.ProductVariants.FirstOrDefault()?.Price.ToString("C", new System.Globalization.CultureInfo("vi-VN"))
-                            </span>
+                                </span>
+                            </div>
+                            <button class="btn btn-outline-dark add-to-cart"
+                                type="button"
+                                data-product-id="@product.ProductId"
+                                data-variant-id="@product.ProductVariants.FirstOrDefault()?.ProductVariantId"
+                                onclick="addToCart(this)">
+                                THÊM VÀO GIỎ HÀNG
+                            </button>
+
+                            <!-- Nút thêm vào danh sách yêu thích -->
+                            <button class="btn btn-outline-danger add-to-favorites"
+                                    type="button"
+                                    data-product-id="@product.ProductId"
+                                    onclick="AddToFavorite(this)"
+                                    style="width: fit-content; position: absolute; right: 0; z-index: 99;">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
                         </div>
-                        <button class="btn btn-outline-dark add-to-cart"
-                            type="button"
-                            data-product-id="@product.ProductId"
-                            data-variant-id="@product.ProductVariants.FirstOrDefault()?.ProductVariantId"
-                            onclick="addToCart(this)">
-                            THÊM VÀO GIỎ HÀNG
-                        </button>
                     </div>
-                </div>
             }
         </div>
     </div>
 </div>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const dropdownMenus = document.querySelectorAll('.dropdownMenu');
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const dropdownMenus = document.querySelectorAll('.dropdownMenu');
 
-            dropdownMenus.forEach(dropdownMenu => {
-                const productId = dropdownMenu.getAttribute('data-product-id');
-                const firstOption = dropdownMenu.options[dropdownMenu.selectedIndex];
-                const initialPrice = firstOption.getAttribute('data-price');
-                document.getElementById(`priceDisplay-${productId}`).textContent = initialPrice;
+                dropdownMenus.forEach(dropdownMenu => {
+                    const productId = dropdownMenu.getAttribute('data-product-id');
+                    const firstOption = dropdownMenu.options[dropdownMenu.selectedIndex];
+                    const initialPrice = firstOption.getAttribute('data-price');
+                    document.getElementById(`priceDisplay-${productId}`).textContent = initialPrice;
 
-                dropdownMenu.addEventListener('change', function () {
-                    const selectedOption = this.options[this.selectedIndex];
-                    const price = selectedOption.getAttribute('data-price');
-                    const variantId = selectedOption.value;
+                    dropdownMenu.addEventListener('change', function () {
+                        const selectedOption = this.options[this.selectedIndex];
+                        const price = selectedOption.getAttribute('data-price');
+                        const variantId = selectedOption.value;
 
-                    // Cập nhật giá hiển thị
-                    document.getElementById(`priceDisplay-${productId}`).textContent = price;
+                        // Cập nhật giá hiển thị
+                        document.getElementById(`priceDisplay-${productId}`).textContent = price;
 
-                    // Cập nhật variantId cho nút "THÊM VÀO GIỎ HÀNG"
-                    const addToCartButton = this.closest('.product').querySelector('.add-to-cart');
-                    addToCartButton.setAttribute('data-variant-id', variantId);
+                        // Cập nhật variantId cho nút "THÊM VÀO GIỎ HÀNG"
+                        const addToCartButton = this.closest('.product').querySelector('.add-to-cart');
+                        addToCartButton.setAttribute('data-variant-id', variantId);
+                    });
                 });
             });
-        });
 
-        // Thêm sản phẩm vào giỏ hàng
-        function addToCart(button) {
-            var productId = $(button).data('product-id');
-            var variantId = $(button).data('variant-id');
+            // Thêm sản phẩm vào giỏ hàng
+            function addToCart(button) {
+                var productId = $(button).data('product-id');
+                var variantId = $(button).data('variant-id');
 
-            $.ajax({
-                url: '@Url.Action("Add", "Cart")',
-                type: 'POST',
-                data: { Id: productId, variantId: variantId },
-                success: function (response) {
-                    alert("Sản phẩm đã được thêm vào giỏ hàng!");
-                },
-                error: function (xhr, status, error) {
-                    alert("Đã có lỗi xảy ra: " + xhr.responseText);
+                $.ajax({
+                    url: '@Url.Action("Add", "Cart")',
+                    type: 'POST',
+                    data: { Id: productId, variantId: variantId },
+                    success: function (response) {
+                        alert("Sản phẩm đã được thêm vào giỏ hàng!");
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Đã có lỗi xảy ra: " + xhr.responseText);
+                    }
+                });
+            }
+
+            // Thêm sản phẩm yêu thích
+            function AddToFavorite(button) {
+                const productId = button.getAttribute("data-product-id");
+                const variantId = button.closest('.product').querySelector('.dropdownMenu').value;
+
+                // Kiểm tra nếu productId hợp lệ
+                if (!productId) {
+                    console.error("Product ID không xác định");
+                    return;
                 }
-            });
-        }
-    </script>
+
+                // Lấy token CSRF từ form
+                const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+                const token = tokenElement ? tokenElement.value : '';
+
+                // Tạo một đối tượng để gửi dữ liệu đến server
+                const data = {
+                    productId: productId,
+                    productVariantId: variantId
+                };
+
+                // Gửi yêu cầu AJAX đến server để thêm sản phẩm vào danh sách yêu thích
+                fetch('/Favorite/AddToFavorite', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token 
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.success) {
+                            alert("Đã thêm vào danh sách yêu thích");
+                            button.classList.add("added"); // Thay đổi kiểu dáng nút nếu cần
+                        } else {
+                            alert("Có lỗi xảy ra khi thêm vào danh sách yêu thích: " + result.message);
+                        }
+                    })
+                    .catch(error => console.error("Yêu cầu thêm vào danh sách yêu thích không thành công:", error));
+            }
+        </script>
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KhielsSkincare.Migrations
 {
     [DbContext(typeof(KhielsContext))]
-    [Migration("20241025160723_Checkout")]
-    partial class Checkout
+    [Migration("20241106015932_AddDiscountCode")]
+    partial class AddDiscountCode
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -119,11 +119,11 @@ namespace KhielsSkincare.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiscountId"), 1L, 1);
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("DiscountAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("DiscountPercentage")
                         .HasColumnType("decimal(18,2)");
@@ -142,6 +142,34 @@ namespace KhielsSkincare.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Discount");
+                });
+
+            modelBuilder.Entity("KhielsSkincare.Models.FavoriteProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductVariantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductVariantId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FavoriteProducts");
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.Order", b =>
@@ -202,9 +230,6 @@ namespace KhielsSkincare.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Size")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OrderDetailId");
@@ -360,6 +385,44 @@ namespace KhielsSkincare.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductVariants");
+                });
+
+            modelBuilder.Entity("KhielsSkincare.Models.Review", b =>
+                {
+                    b.Property<int>("ReviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ReviewId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.Shipping", b =>
@@ -537,6 +600,32 @@ namespace KhielsSkincare.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("KhielsSkincare.Models.FavoriteProduct", b =>
+                {
+                    b.HasOne("KhielsSkincare.Models.Product", "Product")
+                        .WithMany("FavoriteProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("KhielsSkincare.Models.ProductVariant", "ProductVariant")
+                        .WithMany()
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("KhielsSkincare.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductVariant");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("KhielsSkincare.Models.OrderDetail", b =>
                 {
                     b.HasOne("KhielsSkincare.Models.Product", "Product")
@@ -579,6 +668,23 @@ namespace KhielsSkincare.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("KhielsSkincare.Models.Review", b =>
+                {
+                    b.HasOne("KhielsSkincare.Models.Product", "Product")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KhielsSkincare.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -641,9 +747,13 @@ namespace KhielsSkincare.Migrations
                 {
                     b.Navigation("Discounts");
 
+                    b.Navigation("FavoriteProducts");
+
                     b.Navigation("ProductDetail");
 
                     b.Navigation("ProductVariants");
+
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

@@ -24,6 +24,13 @@ builder.Services.AddSession(option =>
     option.Cookie.IsEssential = true;
 });
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// Cấu hình DbContext và bật EnableSensitiveDataLogging
+builder.Services.AddDbContext<KhielsContext>(options =>
+    options.UseSqlServer(connectionString)
+           .EnableSensitiveDataLogging() // Bật logging dữ liệu nhạy cảm
+);
+
 builder.Services.AddRazorPages();
 
 builder.Services.AddIdentity<AppUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)

@@ -106,7 +106,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.Discount", b =>
@@ -117,11 +117,11 @@ namespace KhielsSkincare.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiscountId"), 1L, 1);
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("DiscountAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("DiscountPercentage")
                         .HasColumnType("decimal(18,2)");
@@ -139,7 +139,35 @@ namespace KhielsSkincare.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Discount");
+                    b.ToTable("Discount", (string)null);
+                });
+
+            modelBuilder.Entity("KhielsSkincare.Models.FavoriteProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductVariantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductVariantId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FavoriteProducts", (string)null);
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.Order", b =>
@@ -173,7 +201,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.OrderDetail", b =>
@@ -206,7 +234,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.Payment", b =>
@@ -237,7 +265,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.Product", b =>
@@ -293,7 +321,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.ProductDetail", b =>
@@ -330,7 +358,7 @@ namespace KhielsSkincare.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("ProductDetails");
+                    b.ToTable("ProductDetails", (string)null);
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.ProductVariant", b =>
@@ -354,7 +382,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductVariants");
+                    b.ToTable("ProductVariants", (string)null);
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.Review", b =>
@@ -392,7 +420,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.Shipping", b =>
@@ -423,7 +451,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shippings");
+                    b.ToTable("Shippings", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -570,6 +598,32 @@ namespace KhielsSkincare.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("KhielsSkincare.Models.FavoriteProduct", b =>
+                {
+                    b.HasOne("KhielsSkincare.Models.Product", "Product")
+                        .WithMany("FavoriteProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("KhielsSkincare.Models.ProductVariant", "ProductVariant")
+                        .WithMany()
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("KhielsSkincare.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductVariant");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("KhielsSkincare.Models.OrderDetail", b =>
                 {
                     b.HasOne("KhielsSkincare.Models.Product", "Product")
@@ -690,6 +744,8 @@ namespace KhielsSkincare.Migrations
             modelBuilder.Entity("KhielsSkincare.Models.Product", b =>
                 {
                     b.Navigation("Discounts");
+
+                    b.Navigation("FavoriteProducts");
 
                     b.Navigation("ProductDetail");
 

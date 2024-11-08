@@ -1,4 +1,4 @@
-﻿using KhielsSkincare.Migrations;
+﻿
 using KhielsSkincare.Models;
 using KhielsSkincare.Models.ViewModels;
 using KhielsSkincare.Repository;
