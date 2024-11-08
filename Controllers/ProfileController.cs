@@ -96,5 +96,36 @@ namespace KhielsSkincare.Controllers
 
             return View(user);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ReviewList()
+        {
+            // Lấy ID của người dùng hiện tại từ Identity
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
+
+            // Kiểm tra nếu người dùng không tồn tại (phòng trường hợp lỗi)
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Lấy danh sách đánh giá của người dùng từ cơ sở dữ liệu
+            var reviews = await _context.Reviews
+                .Where(r => r.UserId == userId)  // Lọc các đánh giá của người dùng hiện tại
+                .Include(r => r.User)
+                .Include(r => r.Product)
+                .OrderByDescending(r => r.CreatedAt)
+                .ToListAsync();
+
+            if (!reviews.Any())
+            {
+                Console.WriteLine("Không có đánh giá nào cho người dùng này.");
+            }
+
+            ViewData["CurrentUser"] = user;
+
+            return View(reviews);
+        }
     }
 }

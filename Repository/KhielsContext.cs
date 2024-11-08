@@ -19,9 +19,12 @@ namespace KhielsSkincare.Repository
         public DbSet<Shipping> Shippings { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<FavoriteProduct> FavoriteProducts { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Discount>().ToTable("Discount");
+
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<FavoriteProduct>()
@@ -43,5 +46,16 @@ namespace KhielsSkincare.Repository
                 .OnDelete(DeleteBehavior.Restrict);  // Giữ DeleteBehavior.Restrict cho AspNetUsers
         }
 
+        // Thêm phương thức OnConfiguring để bật SensitiveDataLogging
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+            // Bật Sensitive Data Logging chỉ trong môi trường phát triển
+            if (optionsBuilder.IsConfigured && Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                optionsBuilder.EnableSensitiveDataLogging();
+            }
+        }
     }
 }

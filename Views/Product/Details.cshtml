@@ -275,10 +275,15 @@
                 <div class="accordion-body" id="reviewList">
                     @foreach (var review in Model.Reviews)
                     {
-                        <div class="review-item">
-                            <p><strong>@(review.Name ?? "Ẩn danh")</strong> - @review.Rating sao</p>
-                            <p>@review.Comment</p>
-                            <p><em>@review.CreatedAt.ToString("dd/MM/yyyy")</em></p>
+                        <div class="review-item border-bottom mt-3">
+                            <div class="m-0 d-flex align-items-center">
+                                <div class="me-3">
+                                    <img class="mx-auto" style="width: 50px;" src="https://nhathuoclongchau.com.vn/estore-images/profile/v2/avatar-profile.svg">
+                                </div>
+                                <p class="m-0 fw-500">@(review.Name ?? "Ẩn danh")<span class="fw-normal"> - @review.Rating <i class="fa-solid fa-star" style="color: #FFD43B;"></i></span></p>
+                            </div>
+                            <p class="m-0" style="padding-left: 67px;">@review.Comment</p>
+                            <p style="text-align: right; font-size: 12px; margin: 0;"><em>@review.CreatedAt.ToString("dd/MM/yyyy")</em></p>
                         </div>
                     }
                 </div>
@@ -452,10 +457,13 @@
 
                             // Cập nhật danh sách đánh giá
                             $('#reviews').append(`
+                                    <div>
+                                        <img class="mx-auto" src="https://nhathuoclongchau.com.vn/estore-images/profile/v2/avatar-profile.svg">
+                                    </div>
                                     <div class="review-item">
-                                        <p><strong>${displayName}</strong> - ${formData.rating} sao</p>
-                                        <p>${formData.comment}</p>
-                                        <p><em>${new Date().toLocaleDateString()}</em></p>
+                                                <p class="m-0"><strong>${displayName}</strong> - ${formData.rating} <i class="fa-solid fa-star" style="color: #FFD43B;"></i></p>
+                                        <p class="m-0">${formData.comment}</p>
+                                        <p style="float: right; font-size: 12px;"><em>${new Date().toLocaleDateString()}</em></p>
                                     </div>
                                 `);
                             alert('Thành công');

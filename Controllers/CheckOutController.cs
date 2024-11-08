@@ -22,14 +22,13 @@ namespace KhielsSkincare.Controllers
             _khielsContext = khielsContext;
             _emailSender = sender;
             _webHostEnvironment = webHostEnvironment;
-        }                        
+        }
         // Action xác nhận thanh toán
         [HttpPost]
         public async Task<IActionResult> ProcessCheckout(CheckoutViewModel model, string returnUrl = null)
         {
             if (!User.Identity.IsAuthenticated)
             {
-                // Chuyển hướng đến trang đăng nhập với ReturnUrl
                 return RedirectToAction("Login", "Account", new { returnUrl });
             }
 
@@ -37,23 +36,19 @@ namespace KhielsSkincare.Controllers
             {
                 var userEmail = User.FindFirstValue(ClaimTypes.Email);
                 var orderCode = Guid.NewGuid().ToString();
-                
-                // Tạo mã đơn hàng duy nhất
+
                 List<CartItem> cartItems = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
 
-                // Lưu thông tin giao hàng
-                var shipping = new Shipping
-                {
-                    LastName = model.LastName,
-                    FirstName = model.FirstName,
-                    PhoneNumber = model.PhoneNumber,
-                    AddressLine = model.AddressLine,
-                    City = model.City,
-                    OrderCode = orderCode
-                };
-                _khielsContext.Shippings.Add(shipping);             
+                // Giả sử phí ship cố định là 30,000đ
+                const decimal shippingFee = 30000;
 
-                // Lưu thông tin đơn hàng
+                // Lấy giá trị mã giảm giá từ model, nếu có
+                decimal discountValue = model.DiscountValue ?? 0;
+
+                // Tính tổng tiền giỏ hàng, cộng phí ship và trừ giảm giá
+                decimal provisionalAmount = cartItems.Sum(c => c.Price * c.Quantity);
+                decimal totalAmount = provisionalAmount + shippingFee - discountValue;
+
                 var order = new Order
                 {
                     OrderCode = orderCode,
@@ -61,14 +56,12 @@ namespace KhielsSkincare.Controllers
                     Address = model.AddressLine + ", " + model.City,
                     PhoneNumber = model.PhoneNumber,
                     OrderDate = DateTime.Now,
-                    Status = 0, // Pending status
-                    TotalAmount = cartItems.Sum(c => c.Price * c.Quantity),
+                    Status = 0, // Trạng thái chờ xử lý
+                    TotalAmount = totalAmount // Lưu tổng tiền đã tính phí ship và giảm giá
                 };
                 _khielsContext.Orders.Add(order);
 
-                // Giả sử có giỏ hàng trong session
-                
-
+                // Lưu chi tiết đơn hàng
                 foreach (var item in cartItems)
                 {
                     var orderDetail = new OrderDetail
@@ -87,37 +80,35 @@ namespace KhielsSkincare.Controllers
                 var payment = new Payment
                 {
                     PaymentMethod = model.PaymentMethod,
-                    Amount = cartItems.Sum(c => c.Price * c.Quantity),
+                    Amount = totalAmount,
                     PaymentDate = DateTime.Now,
                     Status = "Success",
                     OrderCode = orderCode
                 };
                 _khielsContext.Payments.Add(payment);
 
+                // Lưu vào cơ sở dữ liệu
                 _khielsContext.SaveChanges();
                 HttpContext.Session.Remove("Cart");
-
 
                 // Đọc và chuẩn bị nội dung email HTML
                 var templatePath = Path.Combine(_webHostEnvironment.WebRootPath, "emailTemplates", "CheckOutSuccess.html");
                 var emailContent = await System.IO.File.ReadAllTextAsync(templatePath);
 
-                // Thay thế các biến trong template
+                // Thay thế các biến trong template email
                 emailContent = emailContent.Replace("{{UserName}}", User.Identity.Name);
                 emailContent = emailContent.Replace("{{OrderCode}}", orderCode);
-                emailContent = emailContent.Replace("{{TotalAmount}}", order.TotalAmount.ToVnd());
+                emailContent = emailContent.Replace("{{TotalAmount}}", totalAmount.ToVnd());
 
                 // Gửi email
-                var receiver = userEmail;
-                var subject = "Xác nhận đơn hàng";
-                await _emailSender.SendEmailAsync(receiver, subject, emailContent);
+                await _emailSender.SendEmailAsync(userEmail, "Xác nhận đơn hàng", emailContent);
 
                 return Json(new { success = true });
             }
 
-            return Json(new { success = false });           
-         
+            return Json(new { success = false });
         }
+
         public IActionResult ThankYou()
         {
             return View();

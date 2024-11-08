@@ -4,6 +4,7 @@ using KhielsSkincare.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KhielsSkincare.Migrations
 {
     [DbContext(typeof(KhielsContext))]
-    partial class KhielsContextModelSnapshot : ModelSnapshot
+    [Migration("20241106015932_AddDiscountCode")]
+    partial class AddDiscountCode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,7 +108,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.Discount", b =>
@@ -139,7 +141,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Discount", (string)null);
+                    b.ToTable("Discount");
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.FavoriteProduct", b =>
@@ -167,7 +169,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FavoriteProducts", (string)null);
+                    b.ToTable("FavoriteProducts");
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.Order", b =>
@@ -201,7 +203,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.OrderDetail", b =>
@@ -234,7 +236,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.Payment", b =>
@@ -265,7 +267,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Payments", (string)null);
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.Product", b =>
@@ -321,7 +323,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.ProductDetail", b =>
@@ -358,7 +360,7 @@ namespace KhielsSkincare.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("ProductDetails", (string)null);
+                    b.ToTable("ProductDetails");
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.ProductVariant", b =>
@@ -382,7 +384,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductVariants", (string)null);
+                    b.ToTable("ProductVariants");
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.Review", b =>
@@ -420,7 +422,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("KhielsSkincare.Models.Shipping", b =>
@@ -451,7 +453,7 @@ namespace KhielsSkincare.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shippings", (string)null);
+                    b.ToTable("Shippings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
