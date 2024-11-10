@@ -31,10 +31,17 @@
 			<div class="form-wrapper">
 				<label>PassWord</label>
 				<input asp-for="Password" class="form-control">
-				<span asp-validation-for="Password" class="text-danger"></span>
-				
+				<span asp-validation-for="Password" class="text-danger"></span>				
 			</div>
-			
+			<div class="form-wrapper">
+                <label>Confirm Password</label>
+                <input asp-for="ConfirmPassword" type="password" class="form-control">
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+			<a asp-action="Login" asp-controller="Account" class="btn">
+				<i class="zmdi zmdi-arrow-left"></i>
+				Login
+			</a>
 			<button>
 				Register
 				<i class="zmdi zmdi-arrow-right"></i>

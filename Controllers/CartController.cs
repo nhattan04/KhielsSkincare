@@ -19,13 +19,26 @@ namespace KhielsSkincare.Controllers
         public IActionResult Index()
         {
             List<CartItem> cartItems = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
-            CartItemViewModel cartVM = new()
-            {
-                CartItems = cartItems,
-                GrandTotal = cartItems.Sum(x => x.Total)
 
+            // Giả sử phí ship là 30,000 VND
+            const decimal shippingFee = 30000;
+            decimal discountValue = 0; // Giảm giá mặc định là 0
+
+            // Tính tổng tiền giỏ hàng
+            decimal provisionalAmount = cartItems.Sum(c => c.Price * c.Quantity);
+            decimal grandTotal = provisionalAmount + shippingFee - discountValue;
+
+            // Tạo ViewModel và truyền vào View
+            var model = new CheckoutViewModel
+            {
+                CartItems = cartItems,  // Đảm bảo rằng CartItems được truyền vào ViewModel
+                ProvisionalAmount = provisionalAmount,
+                ShippingFee = shippingFee,
+                DiscountValue = discountValue,
+                GrandTotal = grandTotal
             };
-            return View(cartVM);
+
+            return View(model); // Truyền model vào View
         }
 
         [HttpPost]
@@ -99,8 +112,26 @@ namespace KhielsSkincare.Controllers
 
             if (cartItem != null)
             {
-                ++cartItem.Quantity;
-                HttpContext.Session.SetJson("Cart", cart);
+                // Lấy thông tin tồn kho của sản phẩm từ cơ sở dữ liệu
+                var productVariant = await _khielsContext.ProductVariants.FindAsync(variantId);
+
+                if (productVariant == null)
+                {
+                    return Json(new { success = false, message = "Sản phẩm không tồn tại." });
+                }
+
+                // Kiểm tra tồn kho
+                if (cartItem.Quantity < productVariant.Quantity)
+                {
+                    // Tăng số lượng sản phẩm trong giỏ hàng nếu chưa đạt giới hạn tồn kho
+                    cartItem.Quantity++;
+                    HttpContext.Session.SetJson("Cart", cart); // Cập nhật giỏ hàng trong session
+                }
+                else
+                {
+                    // Trả về thông báo nếu đã đạt giới hạn tồn kho
+                    return Json(new { success = false, message = "Không thể thêm sản phẩm vì đã đạt giới hạn tồn kho.", currentQuantity = cartItem.Quantity });
+                }
             }
 
             decimal grandTotal = cart.Sum(x => x.Total); // Tính lại tổng giỏ hàng
@@ -140,14 +171,37 @@ namespace KhielsSkincare.Controllers
 
             // Tìm sản phẩm trong giỏ hàng
             var item = cartItems.FirstOrDefault(i => i.ProductVariantId == variantId);
+
+            // Lấy thông tin ProductVariant từ database
+            var productVariant = _khielsContext.ProductVariants.FirstOrDefault(v => v.ProductVariantId == variantId);
+            if (productVariant == null)
+            {
+                return Json(new { success = false, message = "Sản phẩm không tồn tại." });
+            }
+
+            // Kiểm tra nếu số lượng yêu cầu vượt quá tồn kho
+            if (quantity > productVariant.Quantity)
+            {
+                return Json(new { success = false, message = $"Số lượng vượt quá tồn kho. Hiện tại chỉ còn {productVariant.Quantity} sản phẩm." });
+            }
+
             if (item != null)
             {
-                item.Quantity = quantity; // Cập nhật số lượng
+                item.Quantity = quantity; // Cập nhật số lượng nếu số lượng hợp lệ
             }
             else
             {
-                // Nếu sản phẩm không tồn tại trong giỏ, bạn có thể thêm vào (tuỳ thuộc vào logic của bạn)
-                cartItems.Add(new CartItem { ProductVariantId = variantId, Quantity = quantity });
+                // Nếu sản phẩm không tồn tại trong giỏ, thêm vào giỏ hàng với số lượng mới
+                cartItems.Add(new CartItem
+                {
+                    ProductVariantId = variantId,
+                    Quantity = quantity,
+                    ProductId = productVariant.ProductId,
+                    ProductName = productVariant.Product.ProductName,
+                    Size = productVariant.Size,
+                    Price = productVariant.Price,
+                    Image = productVariant.Product.ImageUrl
+                });
             }
 
             // Lưu giỏ hàng vào session
@@ -156,5 +210,38 @@ namespace KhielsSkincare.Controllers
             return Json(new { success = true, message = "Cập nhật giỏ hàng thành công." });
         }
 
+        [HttpPost]
+        public IActionResult CheckDiscountCode(string code, int productId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(code))
+                {
+                    return Json(new { success = false, message = "Mã giảm giá không hợp lệ." });
+                }
+
+                // Trim code để đảm bảo không có khoảng trắng thừa
+                code = code.Trim();
+
+                // Kiểm tra xem mã giảm giá có tồn tại trong bảng Discount và liên kết với sản phẩm có ProductId cụ thể hay không
+                var discount = _khielsContext.Discounts
+                    .Where(d => d.Code == code && d.ProductId == productId)
+                    .FirstOrDefault();
+
+                if (discount != null && discount.StartDate <= DateTime.Now && discount.EndDate >= DateTime.Now)
+                {
+                    return Json(new { success = true, discountPercentage = discount.DiscountPercentage });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Mã giảm giá không hợp lệ hoặc đã hết hạn cho sản phẩm này." });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Gửi thông báo lỗi chi tiết về phía client
+                return Json(new { success = false, message = "Có lỗi xảy ra: " + ex.Message });
+            }
+        }
     }
 }

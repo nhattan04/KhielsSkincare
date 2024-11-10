@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Z68YYR93BjC+lnIKVBp9K10daefXXdiDYsCAhxbf8PQGpvfxMJJySdyGyslDDb0apxvQxd0Vm6cZEOWsX12agg==",
+  "dgSpecHash": "cAFeL9rVfGCBzHBJMaphb17Vr6p/ZADakclxwi72Qha8yUHJXvkS/35oOx+F0MDyrEXupNumP1n5FQbsqHdXRw==",
   "success": true,
   "projectFilePath": "D:\\PROJECT\\DoAnPhanMem\\KhielsVN\\KhielsSkincare\\KhielsSkincare\\KhielsSkincare.csproj",
   "expectedPackageFiles": [
@@ -125,6 +125,7 @@
     "C:\\Users\\Amin\\.nuget\\packages\\nuget.projectmodel\\6.9.1\\nuget.projectmodel.6.9.1.nupkg.sha512",
     "C:\\Users\\Amin\\.nuget\\packages\\nuget.protocol\\6.9.1\\nuget.protocol.6.9.1.nupkg.sha512",
     "C:\\Users\\Amin\\.nuget\\packages\\nuget.versioning\\6.9.1\\nuget.versioning.6.9.1.nupkg.sha512",
+    "C:\\Users\\Amin\\.nuget\\packages\\payos\\1.0.8\\payos.1.0.8.nupkg.sha512",
     "C:\\Users\\Amin\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Amin\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Amin\\.nuget\\packages\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",

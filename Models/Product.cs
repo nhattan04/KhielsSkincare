@@ -16,6 +16,7 @@ namespace KhielsSkincare.Models
         public string Brand { get; set; }
         [Required(ErrorMessage = "Description is required.")]
         public string Description { get; set; }
+        public virtual ICollection<FavoriteProduct> FavoriteProducts { get; set; }
         public int CategoryId { get; set; }
         public string ImageUrl { get; set; }
         public string Image1 { get; set; }

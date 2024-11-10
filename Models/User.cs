@@ -11,5 +11,7 @@ namespace KhielsSkincare.Models
         public string Email { get; set; }
         [DataType(DataType.Password),Required(ErrorMessage = "Không được để trống")]
         public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
+
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace KhielsSkincare.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace KhielsSkincare.Models
 {
     public class Payment
     {
@@ -8,6 +10,8 @@
         public DateTime PaymentDate { get; set; } // Ngày thanh toán
         public string TransactionId { get; set; } // ID giao dịch (nếu có)
         public string Status { get; set; } // Trạng thái thanh toán (thành công, thất bại, chờ xử lý, ...)
-        public string OrderCode { get; internal set; }
+        public int OrderId { get; set; } // Thêm khóa ngoại OrderId để liên kết với Order
+        [ForeignKey("OrderId")]
+        public Order Order { get; set; } // Quan hệ với bảng Order
     }
 }

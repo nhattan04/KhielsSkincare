@@ -116,19 +116,28 @@
                             <form id="msform">
                                 <!-- progressbar -->
                                 <ul id="progressbar">
-                                    <li class="active" id="account"><strong>Tài khoản</strong></li>
-                                    <li id="personal"><strong>Thông tin cá nhân</strong></li>
+                                    <li class="active" id="account"><strong>Thanh Toán</strong></li>
+                                    <li id="personal"><strong>Thông tin giao hàng</strong></li>
                                     <li id="payment"><strong>Thông tin thanh toán</strong></li>
                                     <li id="confirm"><strong>Hoàn tất</strong></li>
                                 </ul>
                                 <!-- fieldsets -->
                                 <fieldset>
                                     <div class="form-card">
-                                        <h2 class="fs-title">Thông tin Tài khoản</h2>
-                                        <input type="email" name="email" placeholder="Email" value="" required />
-                                        <input type="text" name="uname" placeholder="Tên người dùng" value="" required />
+                                        <br><br>
+                                        <div class="row justify-content-center">
+                                            <div class="col-3">
+                                                <img src="https://img.icons8.com/plasticine/100/shipped.png" class="fit-image">
+                                            </div>
+                                        </div>
+                                        <br><br>
+                                        <div class="row justify-content-center">
+                                            <div class="col-7 text-center">
+                                                <h5>Thanh toán cho đơn hàng của bạn</h5>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <input type="button" name="next" class="next action-button" value="Bước tiếp theo" />
+                                    <input type="button" name="next" class="next action-button" value="Xác Nhận" />
                                 </fieldset>
                                 <fieldset>
                                     <div class="form-card">
@@ -147,15 +156,13 @@
                                         <h2 class="fs-title">Thông tin Thanh toán</h2>
                                         <div class="radio-group">
                                             <div class="radio" data-value="cash" onclick="selectPaymentMethod(this)" aria-label="Thanh toán bằng tiền mặt">
-                                                <img src="https://i.imgur.com/jXjwZlj.jpg" width="200px" height="100px" alt="Tiền mặt">
+                                                <img src="~/images/icons8-cash-payment-100.png" width="100px" height="100px" alt="Tiền mặt" />
                                             </div>
-                                            <div class="radio" data-value="CK" onclick="selectPaymentMethod(this)" aria-label="Thanh toán trực tuyến">
-                                                <img src="https://i.imgur.com/jXjwZlj.jpg" width="200px" height="100px" alt="QR">
-                                            </div>
-                                            <div class="radio" data-value="Crebit" onclick="selectPaymentMethod(this)" aria-label="Thanh toán bằng thẻ">
-                                                <img src="https://i.imgur.com/jXjwZlj.jpg" width="200px" height="100px" alt="Crebit">
-                                            </div>
+                                            <div class="radio" data-value="payOS" onclick="selectPaymentMethod(this)" aria-label="Thanh toán trực tuyến">
+                                                <img src="~/images/icons8-qr-code-100.png" width="100px" height="100px" alt="QR" />
+                                            </div>                       
                                         </div>
+
                                         <input type="hidden" id="SelectedPaymentMethod" name="paymentMethod" />
                                     </div>
                                     <input type="button" name="previous" class="previous action-button-previous" value="Quay lại" />
@@ -234,27 +241,40 @@
             });
         }
 
-        
-        // Xử lý sự kiện khi bấm nút tăng/giảm số lượng
+
         $(document).ready(function () {
             $(document).on('click', '.btn-increase, .btn-decrease', function (event) {
                 event.preventDefault();
+
                 const productVariantId = $(this).data('id');
                 const quantityInput = $(`#quantity-${productVariantId}`);
                 let currentQuantity = parseInt(quantityInput.val());
                 const change = $(this).hasClass('btn-increase') ? 1 : -1;
                 const newQuantity = Math.max(currentQuantity + change, 1); // Đảm bảo số lượng tối thiểu là 1
-                quantityInput.val(newQuantity);
 
-                // Cập nhật giỏ hàng trong session
-                updateCartInSession(productVariantId, newQuantity);
-
-                // Cập nhật giá tiền cho sản phẩm và tổng đơn hàng
-                updateTotalPrice(productVariantId, newQuantity);
-                updateGrandTotal();
+                // Kiểm tra tồn kho qua Ajax
+                $.ajax({
+                    url: '/Cart/UpdateQuantity', // Endpoint kiểm tra và cập nhật số lượng trong giỏ
+                    method: 'POST',
+                    data: { variantId: productVariantId, quantity: newQuantity },
+                    success: function (response) {
+                        if (response.success) {
+                            // Cập nhật giao diện nếu số lượng hợp lệ
+                            quantityInput.val(newQuantity);
+                            updateTotalPrice(productVariantId, newQuantity);
+                            updateGrandTotal();
+                        } else {
+                            // Hiển thị thông báo nếu vượt quá tồn kho
+                            alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("Có lỗi xảy ra khi cập nhật giỏ hàng.");
+                    }
+                });
             });
         });
-
+       
         // Hàm cập nhật giá tiền cho từng sản phẩm
         function updateTotalPrice(productVariantId, newQuantity) {
             const priceText = $(`#price-${productVariantId}`).text();

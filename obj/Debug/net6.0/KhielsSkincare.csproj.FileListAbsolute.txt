@@ -1,3 +1,11 @@
+D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.csproj.AssemblyReference.cache
+D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.GeneratedMSBuildEditorConfig.editorconfig
+D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.AssemblyInfoInputs.cache
+D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.AssemblyInfo.cs
+D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.csproj.CoreCompileInputs.cache
+D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.MvcApplicationPartsAssemblyInfo.cache
+D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.RazorAssemblyInfo.cache
+D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.RazorAssemblyInfo.cs
 D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\bin\Debug\net6.0\appsettings.Development.json
 D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\bin\Debug\net6.0\appsettings.json
 D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\bin\Debug\net6.0\KhielsSkincare.staticwebassets.runtime.json
@@ -60,6 +68,7 @@ D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\bin\Debug\net6.0\N
 D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\bin\Debug\net6.0\NuGet.ProjectModel.dll
 D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\bin\Debug\net6.0\NuGet.Protocol.dll
 D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\bin\Debug\net6.0\NuGet.Versioning.dll
+D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\bin\Debug\net6.0\payos-lib-backend-dotnet.dll
 D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\bin\Debug\net6.0\System.Composition.AttributedModel.dll
 D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\bin\Debug\net6.0\System.Composition.Convention.dll
 D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\bin\Debug\net6.0\System.Composition.Hosting.dll
@@ -226,14 +235,6 @@ D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\bin\Debug\net6.0\r
 D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll
 D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
-D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.csproj.AssemblyReference.cache
-D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.GeneratedMSBuildEditorConfig.editorconfig
-D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.AssemblyInfoInputs.cache
-D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.AssemblyInfo.cs
-D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.csproj.CoreCompileInputs.cache
-D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.MvcApplicationPartsAssemblyInfo.cache
-D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.RazorAssemblyInfo.cache
-D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\KhielsSkincare.RazorAssemblyInfo.cs
 D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\staticwebassets.build.json
 D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\staticwebassets.development.json
 D:\PROJECT\DoAnPhanMem\KhielsVN\KhielsSkincare\KhielsSkincare\obj\Debug\net6.0\scopedcss\Areas\Admin\Views\Shared\_LayoutAdmin.cshtml.rz.scp.css

@@ -132,37 +132,73 @@
                         </div>
                     }
                 </div>
-                <div class="d-flex justify-content-evenly">
-                    <div class="input-group pb-3" style="width: 120px;">
-                        <!-- Nút giảm số lượng -->
-                        <button class="btn btn-outline-secondary rounded-0 border-dark border border-end-0 decrease-quantity"
-                                type="button" aria-label="Giảm số lượng"
-                                data-id="@Model.ProductDetail.ProductVariants.First().ProductVariantId">
-                            −
-                        </button>
 
-                        <!-- Trường nhập số lượng -->
-                        <input type="number" class="form-control text-center border-top border-bottom border-0 border-dark bg-white"
-                               id="quantity-@Model.ProductDetail.ProductVariants.First().ProductVariantId" name="quantity" value="1" min="1" max="5" aria-label="Số lượng">
+                @if (Model.ProductDetail.ProductVariants.FirstOrDefault()?.Quantity > 0){
+                    <div class="d-flex justify-content-evenly">
+                        <div class="input-group pb-3" style="width: 120px;">
+                            <!-- Nút giảm số lượng -->
+                            <button class="btn btn-outline-secondary rounded-0 border-dark border border-end-0 decrease-quantity"
+                                    type="button" aria-label="Giảm số lượng"
+                                    data-id="@Model.ProductDetail.ProductVariants.First().ProductVariantId">
+                                −
+                            </button>
+
+                            <!-- Trường nhập số lượng -->
+                            <input type="number" class="form-control text-center border-top border-bottom border-0 border-dark bg-white"
+                                   id="quantity-@Model.ProductDetail.ProductVariants.First().ProductVariantId" name="quantity" value="1" min="1" max="5" aria-label="Số lượng">
 
 
-                        <!-- Nút tăng số lượng -->
-                        <button class="btn btn-outline-secondary rounded-0 border-dark border border-start-0 increase-quantity"
-                                type="button" aria-label="Tăng số lượng"
-                                data-id="@Model.ProductDetail.ProductVariants.First().ProductVariantId">
-                            +
-                        </button>
+                            <!-- Nút tăng số lượng -->
+                            <button class="btn btn-outline-secondary rounded-0 border-dark border border-start-0 increase-quantity"
+                                    type="button" aria-label="Tăng số lượng"
+                                    data-id="@Model.ProductDetail.ProductVariants.First().ProductVariantId">
+                                +
+                            </button>
+                        </div>
+
+                        <div class="ms-3" style="width: 375px;">
+                            <button type="button" class="rounded-0 btn btn-outline-dark add-to-cart w-100"
+                                    data-product-id="@Model.ProductDetail.ProductId"
+                                    data-variant-id="@Model.ProductDetail.ProductVariants.FirstOrDefault()?.ProductVariantId"
+                                    onclick="addToCart(this)">
+                                THÊM VÀO GIỎ HÀNG
+                            </button>
+                        </div>
                     </div>
+                }
+                else{
+                    <div class="d-flex justify-content-evenly">
+                        <div class="input-group pb-3" style="width: 120px;">
+                            <!-- Nút giảm số lượng -->
+                            <button class="btn btn-outline-secondary rounded-0 border-dark border border-end-0 "
+                                     aria-label="Giảm số lượng"
+                                    >
+                                −
+                            </button>
 
-                    <div class="ms-3" style="width: 375px;">
-                        <button type="button" class="rounded-0 btn btn-outline-dark add-to-cart w-100"
-                                data-product-id="@Model.ProductDetail.ProductId"
-                                data-variant-id="@Model.ProductDetail.ProductVariants.FirstOrDefault()?.ProductVariantId"
-                                onclick="addToCart(this)">
-                            THÊM VÀO GIỎ HÀNG
-                        </button>
+                            <!-- Trường nhập số lượng -->
+                            <input  class="form-control text-center border-top border-bottom border-0 border-dark bg-white"
+                                   name="quantity" value="0" aria-label="Số lượng">
+
+
+                            <!-- Nút tăng số lượng -->
+                            <button class="btn btn-outline-secondary rounded-0 border-dark border border-start-0 "
+                                    aria-label="Tăng số lượng"
+                                    >
+                                +
+                            </button>
+                        </div>
+
+                        <div class="ms-3" style="width: 375px;">
+                            <button type="button" class="rounded-0 btn btn-outline-dark  w-100">
+                                    
+                                THÔNG BÁO CHO TÔI
+                            </button>
+                        </div>
                     </div>
-                </div>
+                }
+
+                
 
             </div>
         </div>
@@ -201,13 +237,21 @@
                             @(product.ProductVariants.FirstOrDefault()?.Price.ToVnd())
                         </span>
                     </div>
-                    <button class="btn btn-outline-dark add-to-cart"
+                    @if (product.ProductVariants.FirstOrDefault()?.Quantity > 0){
+                        <button class="btn btn-outline-dark add-to-cart"
                         type="button"
                         data-product-id="@product.ProductId"
                         data-variant-id="@product.ProductVariants.FirstOrDefault()?.ProductVariantId"
                         onclick="addToCart(this)">
                         THÊM VÀO GIỎ HÀNG
                     </button>
+                    }
+                    else{
+                        <button class="btn btn-outline-dark add-to-cart" type="button">
+                            THÔNG BÁO CHO TÔI
+                            </button>
+                    }
+                    
                 </div>
             </div>
         }

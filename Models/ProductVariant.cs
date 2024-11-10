@@ -11,8 +11,9 @@ namespace KhielsSkincare.Models
         public int ProductId { get; set; }
         public string Size { get; set; } // Dung tích
         
-
         public decimal Price { get; set; } // Giá tiền
+        public int Quantity { get; set; }
+        public int Sold { get; set; }
 
         public virtual Product Product { get; set; }
     }

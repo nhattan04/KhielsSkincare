@@ -3,8 +3,22 @@ using KhielsSkincare.Models;
 using KhielsSkincare.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Net.payOS;
+
+IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+PayOS payOS = new PayOS(configuration["Environment:PAYOS_CLIENT_ID"] ?? throw new Exception("Cannot find environment"),
+                    configuration["Environment:PAYOS_API_KEY"] ?? throw new Exception("Cannot find environment"),
+                    configuration["Environment:PAYOS_CHECKSUM_KEY"] ?? throw new Exception("Cannot find environment"));
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton(payOS);
+
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddMvc();
+
 
 // Thêm dịch vụ DbContext vào container
 builder.Services.AddDbContext<KhielsContext>(opts =>
@@ -26,7 +40,7 @@ builder.Services.AddSession(option =>
 
 builder.Services.AddRazorPages();
 
-builder.Services.AddIdentity<AppUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<KhielsContext>()
     .AddDefaultTokenProviders();
 
@@ -62,6 +76,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors();
 app.UseStaticFiles();
 
 app.UseSession();
@@ -73,6 +88,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+app.MapControllerRoute(
+    name: "returnUrl",
+    pattern: "return-url",
+    defaults: new { controller = "CheckOut", action = "ReturnUrl" });
 
 app.MapControllerRoute(
     name: "Areas",

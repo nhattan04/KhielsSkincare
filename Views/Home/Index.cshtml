@@ -91,13 +91,32 @@
                                 @product.ProductVariants.FirstOrDefault()?.Price.ToString("C", new System.Globalization.CultureInfo("vi-VN"))
                             </span>
                         </div>
-                        <button class="btn btn-outline-dark add-to-cart"
+
+                        <!-- Nút thêm vào danh sách yêu thích -->
+                        <button class="btn btn-outline-danger add-to-favorites"
+                            type="button"
+                            data-product-id="@product.ProductId"
+                            onclick="AddToFavorite(this)"
+                            style="width: fit-content; position: absolute; right: 0; z-index: 99;">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+
+                        @if (product.ProductVariants.FirstOrDefault()?.Quantity > 0){
+                            <button class="btn btn-outline-dark add-to-cart"
                             type="button"
                             data-product-id="@product.ProductId"
                             data-variant-id="@product.ProductVariants.FirstOrDefault()?.ProductVariantId"
                             onclick="addToCart(this)">
-                            THÊM VÀO GIỎ HÀNG
-                        </button>
+                                THÊM VÀO GIỎ HÀNG
+                            </button>
+                            
+                        }
+                        else{
+                            <button class="btn btn-outline-dark add-to-cart" type="button">
+                            THÔNG BÁO CHO TÔI
+                            </button>
+                        }
+                        
                     </div>
                 </div>
             }
@@ -106,7 +125,7 @@
 </div>
 
 @section Scripts {
-    <script>
+    <script>   
         document.addEventListener('DOMContentLoaded', function () {
             const dropdownMenus = document.querySelectorAll('.dropdownMenu');
 
@@ -129,7 +148,7 @@
                     addToCartButton.setAttribute('data-variant-id', variantId);
                 });
             });
-        });
+        });      
 
         // Thêm sản phẩm vào giỏ hàng
         function addToCart(button) {
@@ -147,6 +166,48 @@
                     alert("Đã có lỗi xảy ra: " + xhr.responseText);
                 }
             });
+        }
+
+        // Thêm sản phẩm yêu thích
+        function AddToFavorite(button) {
+            const productId = button.getAttribute("data-product-id");
+            const variantId = button.closest('.product').querySelector('.dropdownMenu').value;
+
+            // Kiểm tra nếu productId hợp lệ
+            if (!productId) {
+                console.error("Product ID không xác định");
+                return;
+            }
+
+            // Lấy token CSRF từ form
+            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+            const token = tokenElement ? tokenElement.value : '';
+
+            // Tạo một đối tượng để gửi dữ liệu đến server
+            const data = {
+                productId: productId,
+                productVariantId: variantId
+            };
+
+            // Gửi yêu cầu AJAX đến server để thêm sản phẩm vào danh sách yêu thích
+            fetch('/Favorite/AddToFavorite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': token
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert("Đã thêm vào danh sách yêu thích");
+                        button.classList.add("added"); // Thay đổi kiểu dáng nút nếu cần
+                    } else {
+                        alert("Có lỗi xảy ra khi thêm vào danh sách yêu thích: " + result.message);
+                    }
+                })
+                .catch(error => console.error("Yêu cầu thêm vào danh sách yêu thích không thành công:", error));
         }
     </script>
 }

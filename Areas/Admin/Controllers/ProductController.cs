@@ -11,6 +11,7 @@ namespace KhielsSkincare.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles ="Admin")]
+
     public class ProductController : Controller
     {
         private readonly KhielsContext _khielsContext;
@@ -102,18 +103,21 @@ namespace KhielsSkincare.Areas.Admin.Controllers
                 // Lưu các biến thể
                 foreach (var variant in model.ProductVariants)
                 {
+                    Console.WriteLine($"Variant Size: {variant.Size}, Price: {variant.Price}");
                     variant.ProductId = product.ProductId; // Gán ProductId cho mỗi biến thể
                     _khielsContext.ProductVariants.Add(variant);
                 }
 
                 await _khielsContext.SaveChangesAsync();
+                Console.WriteLine($"Product ID: {product.ProductId}");
                 return RedirectToAction(nameof(ProductList));
             }
 
             ViewBag.Categories = new SelectList(_khielsContext.Categories, "CategoryId", "CategoryId", model.Product.CategoryId);
             return View(model);
         }
-
+        
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var product = await _khielsContext.Products
@@ -230,21 +234,7 @@ namespace KhielsSkincare.Areas.Admin.Controllers
                 // Lưu thay đổi vào cơ sở dữ liệu
                 await _khielsContext.SaveChangesAsync();
                 return RedirectToAction(nameof(ProductList));
-                //    var existingVariants = _khielsContext.ProductVariants.Where(v => v.ProductId == product.ProductId).ToList();
-                //    _khielsContext.ProductVariants.RemoveRange(existingVariants); // Xóa các biến thể cũ
 
-                //    foreach (var variant in model.ProductVariants)
-                //    {
-                //        variant.ProductId = product.ProductId; // Gán ProductId cho mỗi biến thể
-                //        _khielsContext.ProductVariants.Add(variant);
-                //    }
-
-                //    await _khielsContext.SaveChangesAsync();
-                //    return RedirectToAction(nameof(ProductList));
-                //}
-
-                //// Nếu ModelState không hợp lệ, cần trả lại danh sách biến thể để người dùng sửa lại
-                
             }
             ViewBag.Categories = new SelectList(_khielsContext.Categories, "CategoryId", "CategoryId", model.Product.CategoryId);
             return View(model); // Trả lại model để hiển thị trong view
@@ -259,6 +249,11 @@ namespace KhielsSkincare.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            var orderDetails = _khielsContext.OrderDetails.Where(od => od.ProductId == id).ToList();
+            if (orderDetails.Any())
+            {
+                _khielsContext.OrderDetails.RemoveRange(orderDetails);
+            }
 
             _khielsContext.Products.Remove(product);
             await _khielsContext.SaveChangesAsync();
@@ -267,6 +262,50 @@ namespace KhielsSkincare.Areas.Admin.Controllers
         private bool ProductExists(int id)
         {
             return _khielsContext.Products.Any(e => e.ProductId == id);
+        }
+        public IActionResult Stock()
+        {
+            var productVariants = _khielsContext.ProductVariants.ToList(); // Lấy tất cả các biến thể sản phẩm
+            return View(productVariants); // Truyền dữ liệu vào view
+        }
+        public IActionResult StockByProductId(int productId)
+        {
+            var productVariants = _khielsContext.ProductVariants
+                .Where(pv => pv.ProductId == productId)
+                .ToList();
+
+            return View(productVariants); // Trả về view với danh sách ProductVariant
+        }
+        [Route("AddQuantity")]
+        [HttpGet]
+        public async Task<IActionResult> AddQuantity(int Id)
+        {
+            var productByQuantity = await _khielsContext.ProductQuantities.Where(pq => pq.ProductVariantId == Id).ToListAsync();
+            ViewBag.ProductByQuantity = productByQuantity;
+            ViewBag.Id = Id;
+            return View();
+        }
+        [Route("StoreProductQuantity")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult StoreProductQuantity(ProductQuantity productQuantity)
+        {
+            var product = _khielsContext.ProductVariants.Find(productQuantity.ProductVariantId);
+
+            if(product == null)
+            {
+                return NotFound();
+            }
+
+            product.Quantity += productQuantity.Quantity;
+
+            productQuantity.ProductVariantId = productQuantity.ProductVariantId;
+            productQuantity.DateCreate = DateTime.Now;
+
+            _khielsContext.Add(productQuantity);
+            _khielsContext.SaveChanges();
+            TempData["success"] = "Them thanh cong";
+            return RedirectToAction("AddQuantity", "Product", new { id = productQuantity.ProductVariantId });
         }
     }
 }

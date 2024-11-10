@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿
+$(document).ready(function () {
     var current_fs, next_fs, previous_fs; // fieldsets
     var opacity;
 
@@ -65,7 +66,10 @@
         $('#confirmPayment').on('click', function (e) {
             e.preventDefault();
 
-            // Lấy dữ liệu từ form
+            // Lấy phương thức thanh toán đã chọn
+            const selectedPaymentMethod = $('#SelectedPaymentMethod').val();
+
+            // Chuẩn bị dữ liệu để gửi tới server
             const formData = {
                 email: $('input[name="email"]').val(),
                 uname: $('input[name="uname"]').val(),
@@ -74,25 +78,25 @@
                 PhoneNumber: $('#PhoneNumber').val(),
                 AddressLine: $('#AddressLine').val(),
                 City: $('#City').val(),
-                paymentMethod: $('#SelectedPaymentMethod').val()
+                paymentMethod: selectedPaymentMethod
             };
 
-            // Gửi dữ liệu bằng Ajax tới phương thức trong Controller
+            // Kiểm tra phương thức thanh toán
             $.ajax({
                 type: 'POST',
                 url: '/CheckOut/ProcessCheckout',
                 data: formData,
                 success: function (response) {
-                    if (response.success) {
-                        // Chuyển hướng đến trang ThankYou
+                    if (selectedPaymentMethod === 'payOS' && response.redirectUrl) {
+                        // Thanh toán qua PayOS, chuyển hướng đến trang thanh toán của PayOS
+                        window.location.href = response.redirectUrl;
+                    } else if (selectedPaymentMethod === 'cash' && response.success) {
+                        // Thanh toán bằng tiền mặt, chuyển hướng đến trang ThankYou
                         alert('Thanh toán thành công!');
-                        //$('#paymentModal').modal('hide'); // Ẩn modal sau khi thành công
-                        //$('#progressbar li').removeClass('active'); // Reset tiến trình modal
-                        $('#progressbar li#confirm').addClass('active'); // Hiển thị bước hoàn tất
                         window.location.href = '/CheckOut/ThankYou';
                     } else {
-                        // Hiển thị lỗi cụ thể từ server
-                        alert('Có lỗi xảy ra: ' + response.error);
+                        var errorMessage = response.error || response.message || 'Vui lòng thử lại sau.';
+                        alert('Có lỗi xảy ra: ' + errorMessage);
                     }
                 },
                 error: function () {
@@ -102,5 +106,5 @@
         });
     });
 
-});
 
+});
