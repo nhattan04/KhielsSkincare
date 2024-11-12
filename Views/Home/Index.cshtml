@@ -1,4 +1,4 @@
-﻿﻿@{
+﻿﻿﻿@{
     Layout = "_Layout";
     ViewData["Title"] = "Home Page";
 }
@@ -61,6 +61,7 @@
 
     <div class="main__product container pt-5 pb-5">
         <h2 class="text-uppercase fw-500 text-center font-serif pt-5 p-4">Top sản phẩm bán chạy</h2>
+        @Html.AntiForgeryToken()
         <div class="product-slide row row-cols-1 row-cols-md-2 row-cols-lg-4">
             @foreach (var product in Model)
             {
@@ -91,32 +92,22 @@
                                 @product.ProductVariants.FirstOrDefault()?.Price.ToString("C", new System.Globalization.CultureInfo("vi-VN"))
                             </span>
                         </div>
+                        <button class="btn btn-outline-dark add-to-cart"
+                                type="button"
+                                data-product-id="@product.ProductId"
+                                data-variant-id="@product.ProductVariants.FirstOrDefault()?.ProductVariantId"
+                                onclick="addToCart(this)">
+                            THÊM VÀO GIỎ HÀNG
+                        </button>
 
                         <!-- Nút thêm vào danh sách yêu thích -->
                         <button class="btn btn-outline-danger add-to-favorites"
-                            type="button"
-                            data-product-id="@product.ProductId"
-                            onclick="AddToFavorite(this)"
-                            style="width: fit-content; position: absolute; right: 0; z-index: 99;">
+                                type="button"
+                                data-product-id="@product.ProductId"
+                                onclick="AddToFavorite(this)"
+                                style="width: fit-content; position: absolute; right: 0; z-index: 99;">
                             <i class="fa-regular fa-heart"></i>
                         </button>
-
-                        @if (product.ProductVariants.FirstOrDefault()?.Quantity > 0){
-                            <button class="btn btn-outline-dark add-to-cart"
-                            type="button"
-                            data-product-id="@product.ProductId"
-                            data-variant-id="@product.ProductVariants.FirstOrDefault()?.ProductVariantId"
-                            onclick="addToCart(this)">
-                                THÊM VÀO GIỎ HÀNG
-                            </button>
-                            
-                        }
-                        else{
-                            <button class="btn btn-outline-dark add-to-cart" type="button">
-                            THÔNG BÁO CHO TÔI
-                            </button>
-                        }
-                        
                     </div>
                 </div>
             }
@@ -125,7 +116,7 @@
 </div>
 
 @section Scripts {
-    <script>   
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             const dropdownMenus = document.querySelectorAll('.dropdownMenu');
 
@@ -148,7 +139,7 @@
                     addToCartButton.setAttribute('data-variant-id', variantId);
                 });
             });
-        });      
+        });
 
         // Thêm sản phẩm vào giỏ hàng
         function addToCart(button) {

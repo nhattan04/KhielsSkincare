@@ -1,5 +1,4 @@
-﻿using KhielsSkincare.Migrations;
-using KhielsSkincare.Models;
+﻿using KhielsSkincare.Models;
 using KhielsSkincare.Models.ViewModels;
 using KhielsSkincare.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +12,7 @@ namespace KhielsSkincare.Controllers
         private readonly KhielsContext _khielsContext;
 
         public ProductController(ILogger<HomeController> logger, KhielsContext context)
-        {            
+        {
             _khielsContext = context;
         }
         // GET: ProductController
@@ -104,3 +103,4 @@ namespace KhielsSkincare.Controllers
 
     }
 }
+//Đã sửa 

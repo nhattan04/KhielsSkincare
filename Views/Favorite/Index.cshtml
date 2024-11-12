@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿@{
     Layout = "_Layout";
     ViewData["CurrentPage"] = "AddToFavorite";
 }
@@ -52,10 +52,10 @@
                                     </div>
                                     <div class="" style="width: max-content">
                                         <button class="btn btn-primary"
-                                            style="border-radius: 24px;"
-                                            data-product-id="@item.ProductId"
-                                            data-variant-id="@item.ProductVariant.ProductVariantId"
-                                            onclick="addToCart(this)">
+                                                style="border-radius: 24px;"
+                                                data-product-id="@item.ProductId"
+                                                data-variant-id="@item.ProductVariant.ProductVariantId"
+                                                onclick="addToCart(this)">
                                             Thêm vào giỏ hàng
                                         </button>
                                     </div>
@@ -73,6 +73,7 @@
     function addToCart(button) {
         var productId = $(button).data('product-id');
         var variantId = $(button).data('variant-id');
+
         $.ajax({
             url: '@Url.Action("Add", "Cart")',
             type: 'POST',
