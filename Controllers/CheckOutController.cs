@@ -50,7 +50,13 @@ namespace KhielsSkincare.Controllers
                 // Tạo mã đơn hàng duy nhất và lấy giỏ hàng từ session
                 List<CartItem> cartItems = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
                 // Lấy giá trị mã giảm giá từ model, nếu có
-                decimal discountValue = model.DiscountValue ?? 0;
+                decimal discountValue = 0;
+
+                var discountValueString = HttpContext.Session.GetString("discountValue");
+                if (!string.IsNullOrEmpty(discountValueString))
+                {
+                    discountValue = decimal.Parse(discountValueString);
+                }
 
                 decimal provisionalAmount = cartItems.Sum(c => c.Price * c.Quantity);
                 decimal totalAmount = provisionalAmount - discountValue;

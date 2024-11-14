@@ -22,7 +22,7 @@ namespace KhielsSkincare.Controllers
             List<CartItem> cartItems = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
 
             // Giả sử phí ship là 30,000 VND
-            const decimal shippingFee = 30000;
+            const decimal shippingFee = 0;
             decimal discountValue = 0; // Giảm giá mặc định là 0
 
             // Tính tổng tiền giỏ hàng
@@ -207,6 +207,15 @@ namespace KhielsSkincare.Controllers
                 // Gửi thông báo lỗi chi tiết về phía client
                 return Json(new { success = false, message = "Có lỗi xảy ra: " + ex.Message });
             }
+        }
+
+        [HttpPost]
+        public IActionResult SaveDiscountToSession(decimal discountValue)
+        {
+            // Lưu giá trị giảm giá vào session
+            HttpContext.Session.SetString("discountValue", discountValue.ToString());
+
+            return Ok();
         }
     }
 }
