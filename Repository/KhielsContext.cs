@@ -21,29 +21,7 @@ namespace KhielsSkincare.Repository
         public DbSet<ShippingFee> ShippingFees { get; set; }
         public DbSet<Shipping> Shippings { get; set; }
         public DbSet<FavoriteProduct> FavoriteProducts { get; set; }
-        public DbSet<Discount> Discounts { get; set; }
+        public DbSet<Statistical> Statisticals { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<FavoriteProduct>()
-                .HasOne(fp => fp.Product)
-                .WithMany(p => p.FavoriteProducts)
-                .HasForeignKey(fp => fp.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);  // Giữ DeleteBehavior.Restrict ở đây
-
-            modelBuilder.Entity<FavoriteProduct>()
-                .HasOne(fp => fp.ProductVariant)
-                .WithMany()
-                .HasForeignKey(fp => fp.ProductVariantId)
-                .OnDelete(DeleteBehavior.Restrict);  // Giữ DeleteBehavior.Restrict ở đây
-
-            modelBuilder.Entity<FavoriteProduct>()
-                .HasOne(fp => fp.User)
-                .WithMany()
-                .HasForeignKey(fp => fp.UserId)
-                .OnDelete(DeleteBehavior.Restrict);  // Giữ DeleteBehavior.Restrict cho AspNetUsers
-        }
     }
 }

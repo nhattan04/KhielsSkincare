@@ -25,7 +25,8 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Views\Shared\Partial\" />
+	  <Folder Include="Migrations\" />
+	  <Folder Include="Views\Shared\Partial\" />
   </ItemGroup>
 
 </Project>

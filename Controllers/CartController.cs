@@ -3,6 +3,7 @@ using KhielsSkincare.Models;
 using KhielsSkincare.Models.ViewModels;
 using KhielsSkincare.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -41,6 +42,7 @@ namespace KhielsSkincare.Controllers
             return View(model); // Truyền model vào View
         }
 
+
         [HttpPost]
         [Route("Cart/Add")]
         public async Task<IActionResult> Add(int Id, int variantId)
@@ -67,15 +69,19 @@ namespace KhielsSkincare.Controllers
                 cartItem.Quantity += 1;
             }
 
+            // Lưu giỏ hàng vào Session
             HttpContext.Session.SetJson("Cart", cart);
+
             return Json(new { success = true });
         }
+
+
 
 
         [HttpPost]
         public async Task<IActionResult> Decrease(int variantId)
         {
-            List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart");         
+            List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart");
 
             CartItem cartItem = cart.FirstOrDefault(c => c.ProductVariantId == variantId);
 
@@ -112,26 +118,8 @@ namespace KhielsSkincare.Controllers
 
             if (cartItem != null)
             {
-                // Lấy thông tin tồn kho của sản phẩm từ cơ sở dữ liệu
-                var productVariant = await _khielsContext.ProductVariants.FindAsync(variantId);
-
-                if (productVariant == null)
-                {
-                    return Json(new { success = false, message = "Sản phẩm không tồn tại." });
-                }
-
-                // Kiểm tra tồn kho
-                if (cartItem.Quantity < productVariant.Quantity)
-                {
-                    // Tăng số lượng sản phẩm trong giỏ hàng nếu chưa đạt giới hạn tồn kho
-                    cartItem.Quantity++;
-                    HttpContext.Session.SetJson("Cart", cart); // Cập nhật giỏ hàng trong session
-                }
-                else
-                {
-                    // Trả về thông báo nếu đã đạt giới hạn tồn kho
-                    return Json(new { success = false, message = "Không thể thêm sản phẩm vì đã đạt giới hạn tồn kho.", currentQuantity = cartItem.Quantity });
-                }
+                ++cartItem.Quantity;
+                HttpContext.Session.SetJson("Cart", cart);
             }
 
             decimal grandTotal = cart.Sum(x => x.Total); // Tính lại tổng giỏ hàng
@@ -144,11 +132,11 @@ namespace KhielsSkincare.Controllers
         [HttpPost]
         public IActionResult Remove(int variantId)
         {
-            List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart");          
+            List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart");
 
             CartItem cartItem = cart.FirstOrDefault(c => c.ProductVariantId == variantId);
 
-            if (cartItem != null) 
+            if (cartItem != null)
             {
                 cart.Remove(cartItem); // Xóa sản phẩm khỏi giỏ hàng
                 HttpContext.Session.SetJson("Cart", cart); // Cập nhật lại giỏ hàng trong session
@@ -171,37 +159,14 @@ namespace KhielsSkincare.Controllers
 
             // Tìm sản phẩm trong giỏ hàng
             var item = cartItems.FirstOrDefault(i => i.ProductVariantId == variantId);
-
-            // Lấy thông tin ProductVariant từ database
-            var productVariant = _khielsContext.ProductVariants.FirstOrDefault(v => v.ProductVariantId == variantId);
-            if (productVariant == null)
-            {
-                return Json(new { success = false, message = "Sản phẩm không tồn tại." });
-            }
-
-            // Kiểm tra nếu số lượng yêu cầu vượt quá tồn kho
-            if (quantity > productVariant.Quantity)
-            {
-                return Json(new { success = false, message = $"Số lượng vượt quá tồn kho. Hiện tại chỉ còn {productVariant.Quantity} sản phẩm." });
-            }
-
             if (item != null)
             {
-                item.Quantity = quantity; // Cập nhật số lượng nếu số lượng hợp lệ
+                item.Quantity = quantity; // Cập nhật số lượng
             }
             else
             {
-                // Nếu sản phẩm không tồn tại trong giỏ, thêm vào giỏ hàng với số lượng mới
-                cartItems.Add(new CartItem
-                {
-                    ProductVariantId = variantId,
-                    Quantity = quantity,
-                    ProductId = productVariant.ProductId,
-                    ProductName = productVariant.Product.ProductName,
-                    Size = productVariant.Size,
-                    Price = productVariant.Price,
-                    Image = productVariant.Product.ImageUrl
-                });
+                // Nếu sản phẩm không tồn tại trong giỏ, bạn có thể thêm vào (tuỳ thuộc vào logic của bạn)
+                cartItems.Add(new CartItem { ProductVariantId = variantId, Quantity = quantity });
             }
 
             // Lưu giỏ hàng vào session

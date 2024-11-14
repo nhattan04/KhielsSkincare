@@ -90,11 +90,6 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.MapControllerRoute(
-    name: "returnUrl",
-    pattern: "return-url",
-    defaults: new { controller = "CheckOut", action = "ReturnUrl" });
-
-app.MapControllerRoute(
     name: "Areas",
     pattern: "{area:exists}/{controller=Product}/{action=Index}/{id?}");
 

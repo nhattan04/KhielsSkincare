@@ -1,25 +1,32 @@
 ﻿using KhielsSkincare.Models;
+using KhielsSkincare.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using KhielsSkincare.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KhielsSkincare.Controllers
 {
     public class ProfileController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly KhielsContext _context;
+        private readonly ILogger<HomeController> _logger;
 
-        public ProfileController(UserManager<AppUser> userManager)
+        public ProfileController(ILogger<HomeController> logger, KhielsContext context, UserManager<AppUser> userManager)
         {
+            _logger = logger;
+            _context = context;
             _userManager = userManager;
         }
 
         public async Task<IActionResult> ProfileDetail()
         {
             ViewData["CurrentPage"] = "ProfileDetail";
-            // Lấy thông tin người dùng hiện tại
             var user = await _userManager.GetUserAsync(User);
 
-            // Truyền thông tin người dùng qua View
             return View(user);
         }
 
@@ -79,17 +86,46 @@ namespace KhielsSkincare.Controllers
                 return View("ProfileDetail", user);
             }
 
-            return RedirectToAction("ProfileDetail"); // Redirect về trang chi tiết
+            return RedirectToAction("ProfileDetail");
         }
 
         public async Task<IActionResult> Orders()
         {
             ViewData["CurrentPage"] = "Orders";
-            // Lấy thông tin người dùng hiện tại
             var user = await _userManager.GetUserAsync(User);
 
-            // Truyền thông tin người dùng qua View
             return View(user);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ReviewList()
+        {
+            // Lấy ID của người dùng hiện tại từ Identity
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
+
+            // Kiểm tra nếu người dùng không tồn tại (phòng trường hợp lỗi)
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Lấy danh sách đánh giá của người dùng từ cơ sở dữ liệu
+            var reviews = await _context.Reviews
+                .Where(r => r.UserId == userId)  // Lọc các đánh giá của người dùng hiện tại
+                .Include(r => r.User)
+                .Include(r => r.Product)
+                .OrderByDescending(r => r.CreatedAt)
+                .ToListAsync();
+
+            if (!reviews.Any())
+            {
+                Console.WriteLine("Không có đánh giá nào cho người dùng này.");
+            }
+
+            ViewData["CurrentUser"] = user;
+
+            return View(reviews);
         }
     }
 }

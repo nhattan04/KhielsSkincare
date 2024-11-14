@@ -138,51 +138,63 @@ namespace KhielsSkincare.Controllers
                         "Thanh toan don hang",
                         items,
                         "https://localhost:7220",
-                        "https://localhost:7220/"
+                        "https://localhost:7220"
                     );
 
                     CreatePaymentResult createPayment = await payOS.createPaymentLink(paymentData);
 
-                    return Json(new { success = true, redirectUrl = createPayment.checkoutUrl });
+                    var payment = new Payment
+                    {
+                        PaymentDate = DateTime.Now,
+                        Amount = order.TotalAmount,
+                        PaymentMethod = "PayOS",
+                        Status = "Completed",
+                        OrderId = order.OrderId,
+                    };
+
+                    _khielsContext.Payments.Add(payment);
+                    await _khielsContext.SaveChangesAsync();
+                    HttpContext.Session.Remove("Cart");
+                    await SendOrderConfirmationEmail(userEmail, User.Identity.Name, orderCode, order.TotalAmount);
+
+                    return Json(new { success = true, redirectUrl = createPayment.checkoutUrl});
                 }
             }
             return Json(new { success = false, message = "Dữ liệu không hợp lệ." });
         }
-
-        public async Task<IActionResult> ThankYou(string orderCode, CheckoutViewModel model)
+        public async Task<IActionResult> ThankYou(/*string orderCode, CheckoutViewModel model*/)
         {
-            // Kiểm tra xác thực thanh toán từ PayOS nếu cần thiết
-            // Tại đây, bạn có thể gọi API của PayOS để xác minh trạng thái thanh toán nếu họ cung cấp
-            var userEmail = User.FindFirstValue(ClaimTypes.Email); // Khai báo userEmail tại đây
-            // Lấy thông tin đơn hàng dựa trên mã đơn hàng
-            var order = _khielsContext.Orders.FirstOrDefault(o => o.OrderCode == orderCode);
+            
+            //var userEmail = User.FindFirstValue(ClaimTypes.Email); // Khai báo userEmail tại đây
+            //// Lấy thông tin đơn hàng dựa trên mã đơn hàng
+            //var order = _khielsContext.Orders.FirstOrDefault(o => o.OrderCode == orderCode);
 
-            if (order == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            var existingPayment = _khielsContext.Payments
-                    .FirstOrDefault(p => p.Id == order.OrderId && p.PaymentMethod != null);
+            //if (order == null)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
+            //var existingPayment = _khielsContext.Payments
+            //        .FirstOrDefault(p => p.Id == order.OrderId && p.PaymentMethod != null);
 
-            // Lưu thông tin thanh toán vào bảng Payment
-            if (model.PaymentMethod == "payOS")
-            {
-                var payment = new Payment
-                {
-                    PaymentDate = DateTime.Now,
-                    Amount = order.TotalAmount,
-                    PaymentMethod = "PayOS", // Hoặc phương thức thanh toán khác nếu cần
-                    Status = "Completed",
-                    OrderId = order.OrderId,
-                };
-                _khielsContext.Payments.Add(payment);
-                await _khielsContext.SaveChangesAsync();
-                HttpContext.Session.Remove("Cart");
+            //// Lưu thông tin thanh toán vào bảng Payment
+            //if (model.PaymentMethod == "payOS")
+            //{
+            //    var payment = new Payment
+            //    {
+            //        PaymentDate = DateTime.Now,
+            //        Amount = order.TotalAmount,
+            //        PaymentMethod = "PayOS", // Hoặc phương thức thanh toán khác nếu cần
+            //        Status = "Completed",
+            //        OrderId = order.OrderId,
+            //    };
+            //    _khielsContext.Payments.Add(payment);
+            //    await _khielsContext.SaveChangesAsync();
+            //    HttpContext.Session.Remove("Cart");
 
-                await SendOrderConfirmationEmail(userEmail, User.Identity.Name, orderCode, order.TotalAmount);
-            }
+            //    //await SendOrderConfirmationEmail(userEmail, User.Identity.Name, orderCode, order.TotalAmount);
+            //}
 
-            return View(order);
+            return View();
         }
 
         // Hàm gửi email xác nhận đơn hàng
