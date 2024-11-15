@@ -78,5 +78,19 @@ namespace KhielsSkincare.Areas.Admin.Controllers
             }
             return RedirectToAction("Index"); // Chuyển hướng về danh sách người dùng sau khi xóa
         }
+
+        [Route("Payment")]
+        public IActionResult Payment()
+        {
+            var payments = _khielsContext.Payments.Include(p => p.Order).ToList();
+            return View(payments);
+        }
+
+        [Route("Shipping")]
+        public IActionResult Shipping()
+        {
+            var shippings = _khielsContext.Shippings.ToList();  
+            return View(shippings);
+        }
     }
 }

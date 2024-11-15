@@ -82,7 +82,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
@@ -140,8 +140,8 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Account</h6>
                         <a class="collapse-item" asp-action="Index" asp-controller="User">Account List</a>
-                        <a class="collapse-item" href="utilities-border.html">Payments</a>
-                        <a class="collapse-item" href="utilities-animation.html">Shipping</a>
+                        <a class="collapse-item" asp-action="Payment" asp-controller="User">Payments</a>
+                        <a class="collapse-item" asp-action="Shipping" asp-controller="User">Shipping</a>
                         <a class="collapse-item" href="utilities-other.html">Infomation</a>
                     </div>
                 </div>

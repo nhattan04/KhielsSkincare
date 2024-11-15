@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KhielsSkincare")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+40d07e62a9a4dba49a3af68c847f001f774b6d30")]
 [assembly: System.Reflection.AssemblyProductAttribute("KhielsSkincare")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KhielsSkincare")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
